@@ -79,13 +79,7 @@
                                                        rdf:first 2 ;
                                                        rdf:rest [ rdf:type rdf:List ;
                                                                   rdf:first 3 ;
-                                                                  rdf:rest [ rdf:type rdf:List ;
-                                                                             rdf:first 4 ;
-                                                                             rdf:rest [ rdf:type rdf:List ;
-                                                                                        rdf:first 5 ;
-                                                                                        rdf:rest rdf:nil
-                                                                                      ]
-                                                                           ]
+                                                                  rdf:rest rdf:nil
                                                                 ]
                                                      ]
                                           ]
@@ -125,6 +119,25 @@
                 rdfs:subClassOf :Malaltia .
 
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Ejercicio-Fisico
+:Ejercicio-Fisico rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Equilibrio
+:Equilibrio rdf:type owl:Class ;
+            rdfs:subClassOf :Ejercicio-Fisico .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Flexibilización
+:Flexibilización rdf:type owl:Class ;
+                 rdfs:subClassOf :Ejercicio-Fisico .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Fortalecimiento
+:Fortalecimiento rdf:type owl:Class ;
+                 rdfs:subClassOf :Ejercicio-Fisico .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Locomotiva
 :Locomotiva rdf:type owl:Class ;
             rdfs:subClassOf :Malaltia .
@@ -135,8 +148,19 @@
           rdfs:comment "Taxonomia de malaltia." .
 
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Otros
+:Otros rdf:type owl:Class ;
+       rdfs:subClassOf :Malaltia ;
+       rdfs:comment "Otros tipos de enfermedades, como pueden ser la diabetes, las enfermedades neurológicas, etc" .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Persona
 :Persona rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Resistencia
+:Resistencia rdf:type owl:Class ;
+             rdfs:subClassOf :Ejercicio-Fisico .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Respiratoria
@@ -148,10 +172,75 @@
 #    Individuals
 #################################################################
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Andar-rápido
+:Andar-rápido rdf:type owl:NamedIndividual ,
+                       :Fortalecimiento .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Artritis
+:Artritis rdf:type owl:NamedIndividual ,
+                   :Locomotiva .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Asma
 :Asma rdf:type owl:NamedIndividual ,
                :Respiratoria ;
       :nom "Asma" .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Baile
+:Baile rdf:type owl:NamedIndividual ,
+                :Equilibrio ,
+                :Flexibilización .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Caminar
+:Caminar rdf:type owl:NamedIndividual ,
+                  :Flexibilización .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Deporte
+:Deporte rdf:type owl:NamedIndividual ,
+                  :Fortalecimiento ,
+                  :Resistencia .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Diabetes
+:Diabetes rdf:type owl:NamedIndividual ,
+                   :Otros .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Enfermedad-pulmonar-obstructiva-cronica
+:Enfermedad-pulmonar-obstructiva-cronica rdf:type owl:NamedIndividual ,
+                                                  :Respiratoria .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Fibrosis-quistica
+:Fibrosis-quistica rdf:type owl:NamedIndividual ,
+                            :Respiratoria .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Gimnasia
+:Gimnasia rdf:type owl:NamedIndividual ,
+                   :Flexibilización ,
+                   :Fortalecimiento ,
+                   :Resistencia .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Infarto-agudo-miocardio
+:Infarto-agudo-miocardio rdf:type owl:NamedIndividual ,
+                                  :Cardiovascular .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Insuficiencia-cardiaca
+:Insuficiencia-cardiaca rdf:type owl:NamedIndividual ,
+                                 :Cardiovascular .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Ir-en-bici
+:Ir-en-bici rdf:type owl:NamedIndividual ,
+                     :Equilibrio ,
+                     :Resistencia .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Joan
@@ -168,9 +257,45 @@
       :ritme_cardiac_repos 70 .
 
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Natación
+:Natación rdf:type owl:NamedIndividual ,
+                   :Fortalecimiento ,
+                   :Resistencia .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Obesidad
+:Obesidad rdf:type owl:NamedIndividual ,
+                   :Otros .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Osteoporosis
+:Osteoporosis rdf:type owl:NamedIndividual ,
+                       :Locomotiva .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Patricio
 :Patricio rdf:type owl:NamedIndividual ,
                    :Persona .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Pesas
+:Pesas rdf:type owl:NamedIndividual ,
+                :Fortalecimiento .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Sentadillas
+:Sentadillas rdf:type owl:NamedIndividual ,
+                      :Fortalecimiento .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Subir-escaleras
+:Subir-escaleras rdf:type owl:NamedIndividual ,
+                          :Fortalecimiento .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Trastorno-de-ansiedad
+:Trastorno-de-ansiedad rdf:type owl:NamedIndividual ,
+                                :Otros .
 
 
 #################################################################
@@ -180,7 +305,25 @@
 [ rdf:type owl:AllDisjointClasses ;
   owl:members ( :Cardiovascular
                 :Locomotiva
+                :Otros
                 :Respiratoria
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Ejercicio-Fisico
+                :Malaltia
+                :Persona
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Equilibrio
+                :Flexibilización
+                :Fortalecimiento
+                :Resistencia
               )
 ] .
 
