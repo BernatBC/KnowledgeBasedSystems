@@ -1,0 +1,188 @@
+@prefix : <http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS> .
+
+<http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS> rdf:type owl:Ontology ;
+                                                                     rdfs:comment "Aquesta es la nostra ontologia per a la practica de Sistemes Basats en el Coneixament (KBS)." .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#pateix
+:pateix rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf owl:topObjectProperty ;
+        rdfs:domain :Persona ;
+        rdfs:range :Malaltia .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#alçada
+:alçada rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf owl:topDataProperty ;
+        rdf:type owl:FunctionalProperty ;
+        rdfs:domain :Persona ;
+        rdfs:range xsd:double .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#edat
+:edat rdf:type owl:DatatypeProperty ;
+      rdfs:subPropertyOf owl:topDataProperty ;
+      rdf:type owl:FunctionalProperty ;
+      rdfs:domain :Persona ;
+      rdfs:range xsd:unsignedInt .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#fumador
+:fumador rdf:type owl:DatatypeProperty ;
+         rdfs:subPropertyOf owl:topDataProperty ;
+         rdf:type owl:FunctionalProperty ;
+         rdfs:domain :Persona ;
+         rdfs:range xsd:boolean .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#genere
+:genere rdf:type owl:DatatypeProperty ;
+        rdfs:subPropertyOf owl:topDataProperty ;
+        rdf:type owl:FunctionalProperty ;
+        rdfs:domain :Persona ;
+        rdfs:range [ rdf:type rdfs:Datatype ;
+                     owl:oneOf [ rdf:type rdf:List ;
+                                 rdf:first "altres" ;
+                                 rdf:rest [ rdf:type rdf:List ;
+                                            rdf:first "dona" ;
+                                            rdf:rest [ rdf:type rdf:List ;
+                                                       rdf:first "home" ;
+                                                       rdf:rest rdf:nil
+                                                     ]
+                                          ]
+                               ]
+                   ] .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#grau_sedentarisme
+:grau_sedentarisme rdf:type owl:DatatypeProperty ;
+                   rdfs:subPropertyOf owl:topDataProperty ;
+                   rdf:type owl:FunctionalProperty ;
+                   rdfs:domain :Persona ;
+                   rdfs:range [ rdf:type rdfs:Datatype ;
+                                owl:oneOf [ rdf:type rdf:List ;
+                                            rdf:first 1 ;
+                                            rdf:rest [ rdf:type rdf:List ;
+                                                       rdf:first 2 ;
+                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                  rdf:first 3 ;
+                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                             rdf:first 4 ;
+                                                                             rdf:rest [ rdf:type rdf:List ;
+                                                                                        rdf:first 5 ;
+                                                                                        rdf:rest rdf:nil
+                                                                                      ]
+                                                                           ]
+                                                                ]
+                                                     ]
+                                          ]
+                              ] .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#nom
+:nom rdf:type owl:DatatypeProperty ;
+     rdfs:subPropertyOf owl:topDataProperty ;
+     rdf:type owl:FunctionalProperty ;
+     rdfs:domain :Persona ;
+     rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#pes
+:pes rdf:type owl:DatatypeProperty ;
+     rdfs:subPropertyOf owl:topDataProperty ;
+     rdf:type owl:FunctionalProperty ;
+     rdfs:domain :Persona ;
+     rdfs:range xsd:double .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#ritme_cardiac_repos
+:ritme_cardiac_repos rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf owl:topDataProperty ;
+                     rdf:type owl:FunctionalProperty ;
+                     rdfs:domain :Persona ;
+                     rdfs:range xsd:positiveInteger .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Cardiovascular
+:Cardiovascular rdf:type owl:Class ;
+                rdfs:subClassOf :Malaltia .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Locomotiva
+:Locomotiva rdf:type owl:Class ;
+            rdfs:subClassOf :Malaltia .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Malaltia
+:Malaltia rdf:type owl:Class ;
+          rdfs:comment "Taxonomia de malaltia." .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Persona
+:Persona rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Respiratoria
+:Respiratoria rdf:type owl:Class ;
+              rdfs:subClassOf :Malaltia .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Asma
+:Asma rdf:type owl:NamedIndividual ,
+               :Respiratoria ;
+      :nom "Asma" .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Joan
+:Joan rdf:type owl:NamedIndividual ,
+               :Persona ;
+      :pateix :Asma ;
+      :alçada 170 ;
+      :edat 99 ;
+      :fumador 1 ;
+      :genere "home" ;
+      :grau_sedentarisme 4 ;
+      :nom "Joan" ;
+      :pes 80 ;
+      :ritme_cardiac_repos 70 .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Patricio
+:Patricio rdf:type owl:NamedIndividual ,
+                   :Persona .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Cardiovascular
+                :Locomotiva
+                :Respiratoria
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
