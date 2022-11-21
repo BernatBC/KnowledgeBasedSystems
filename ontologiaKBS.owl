@@ -13,6 +13,14 @@
 #    Object Properties
 #################################################################
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#incompatible_amb
+:incompatible_amb rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf owl:topObjectProperty ;
+                  rdf:type owl:SymmetricProperty ;
+                  rdfs:domain :Ejercicio-Fisico ;
+                  rdfs:range :Malaltia .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#pateix
 :pateix rdf:type owl:ObjectProperty ;
         rdfs:subPropertyOf owl:topObjectProperty ;
@@ -295,7 +303,8 @@
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Trastorno-de-ansiedad
 :Trastorno-de-ansiedad rdf:type owl:NamedIndividual ,
-                                :Otros .
+                                :Otros ;
+                       :incompatible_amb :Baile .
 
 
 #################################################################
