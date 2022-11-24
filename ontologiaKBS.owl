@@ -87,11 +87,42 @@
                                                        rdf:first 2 ;
                                                        rdf:rest [ rdf:type rdf:List ;
                                                                   rdf:first 3 ;
-                                                                  rdf:rest rdf:nil
+                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                             rdf:first 4 ;
+                                                                             rdf:rest [ rdf:type rdf:List ;
+                                                                                        rdf:first 5 ;
+                                                                                        rdf:rest rdf:nil
+                                                                                      ]
+                                                                           ]
                                                                 ]
                                                      ]
                                           ]
                               ] .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#intensitat
+:intensitat rdf:type owl:DatatypeProperty ;
+            rdfs:subPropertyOf owl:topDataProperty ;
+            rdf:type owl:FunctionalProperty ;
+            rdfs:domain :Ejercicio-Fisico ;
+            rdfs:range [ rdf:type rdfs:Datatype ;
+                         owl:oneOf [ rdf:type rdf:List ;
+                                     rdf:first 1 ;
+                                     rdf:rest [ rdf:type rdf:List ;
+                                                rdf:first 2 ;
+                                                rdf:rest [ rdf:type rdf:List ;
+                                                           rdf:first 3 ;
+                                                           rdf:rest [ rdf:type rdf:List ;
+                                                                      rdf:first 4 ;
+                                                                      rdf:rest [ rdf:type rdf:List ;
+                                                                                 rdf:first 5 ;
+                                                                                 rdf:rest rdf:nil
+                                                                               ]
+                                                                    ]
+                                                         ]
+                                              ]
+                                   ]
+                       ] .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#nom
@@ -182,7 +213,8 @@
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Andar-rápido
 :Andar-rápido rdf:type owl:NamedIndividual ,
-                       :Fortalecimiento .
+                       :Fortalecimiento ;
+              :intensitat 2 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Artritis
@@ -199,18 +231,23 @@
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Baile
 :Baile rdf:type owl:NamedIndividual ,
                 :Equilibrio ,
-                :Flexibilización .
+                :Flexibilización ;
+       :incompatible_amb :Trastorno-de-ansiedad ;
+       :intensitat 2 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Caminar
 :Caminar rdf:type owl:NamedIndividual ,
-                  :Flexibilización .
+                  :Flexibilización ;
+         :intensitat 1 .
 
 
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Deporte
-:Deporte rdf:type owl:NamedIndividual ,
-                  :Fortalecimiento ,
-                  :Resistencia .
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Correr
+:Correr rdf:type owl:NamedIndividual ,
+                 :Flexibilización ,
+                 :Resistencia ;
+        :incompatible_amb :Fibrosis-quistica ;
+        :intensitat 4 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Diabetes
@@ -232,7 +269,8 @@
 :Gimnasia rdf:type owl:NamedIndividual ,
                    :Flexibilización ,
                    :Fortalecimiento ,
-                   :Resistencia .
+                   :Resistencia ;
+          :intensitat 3 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Infarto-agudo-miocardio
@@ -248,27 +286,15 @@
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Ir-en-bici
 :Ir-en-bici rdf:type owl:NamedIndividual ,
                      :Equilibrio ,
-                     :Resistencia .
-
-
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Joan
-:Joan rdf:type owl:NamedIndividual ,
-               :Persona ;
-      :pateix :Asma ;
-      :alçada 170 ;
-      :edat 99 ;
-      :fumador 1 ;
-      :genere "home" ;
-      :grau_sedentarisme 4 ;
-      :nom "Joan" ;
-      :pes 80 ;
-      :ritme_cardiac_repos 70 .
+                     :Resistencia ;
+            :intensitat 4 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Natación
 :Natación rdf:type owl:NamedIndividual ,
                    :Fortalecimiento ,
-                   :Resistencia .
+                   :Resistencia ;
+          :intensitat 3 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Obesidad
@@ -281,30 +307,33 @@
                        :Locomotiva .
 
 
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Patricio
-:Patricio rdf:type owl:NamedIndividual ,
-                   :Persona .
-
-
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Pesas
 :Pesas rdf:type owl:NamedIndividual ,
-                :Fortalecimiento .
+                :Fortalecimiento ;
+       :intensitat 2 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Sentadillas
 :Sentadillas rdf:type owl:NamedIndividual ,
-                      :Fortalecimiento .
+                      :Fortalecimiento ;
+             :intensitat 3 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Subir-escaleras
 :Subir-escaleras rdf:type owl:NamedIndividual ,
-                          :Fortalecimiento .
+                          :Fortalecimiento ;
+                 :intensitat 1 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Trastorno-de-ansiedad
 :Trastorno-de-ansiedad rdf:type owl:NamedIndividual ,
                                 :Otros ;
                        :incompatible_amb :Baile .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#me
+:me rdf:type owl:NamedIndividual ,
+             :Persona .
 
 
 #################################################################

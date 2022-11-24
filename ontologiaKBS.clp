@@ -2,7 +2,7 @@
 ;;; ontologiaKBS.clp
 ;;; Translated by owl2clips
 ;;; Translated to CLIPS from ontology ontologiaKBS.owl
-;;; :Date 21/11/2022 10:21:37
+;;; :Date 24/11/2022 19:01:38
 
 (defclass Malaltia "Taxonomia de malaltia."
     (is-a USER)
@@ -38,6 +38,12 @@
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
+    (multislot incompatible_amb
+        (type INSTANCE)
+        (create-accessor read-write))
+    (slot intensitat
+        (type SYMBOL)
+        (create-accessor read-write))
 )
 
 (defclass Equilibrio
@@ -99,6 +105,7 @@
 
 (definstances instances
     ([Andar-rápido] of Fortalecimiento
+         (intensitat  2)
     )
 
     ([Artritis] of Locomotiva
@@ -108,12 +115,17 @@
     )
 
     ([Baile] of Flexibilización
+         (incompatible_amb  [Trastorno-de-ansiedad])
+         (intensitat  2)
     )
 
     ([Caminar] of Flexibilización
+         (intensitat  1)
     )
 
-    ([Deporte] of Resistencia
+    ([Correr] of Resistencia
+         (incompatible_amb  [Fibrosis-quistica])
+         (intensitat  4)
     )
 
     ([Diabetes] of Otros
@@ -126,6 +138,7 @@
     )
 
     ([Gimnasia] of Resistencia
+         (intensitat  3)
     )
 
     ([Infarto-agudo-miocardio] of Cardiovascular
@@ -135,21 +148,11 @@
     )
 
     ([Ir-en-bici] of Resistencia
-    )
-
-    ([Joan] of Persona
-         (pateix  [Asma])
-         (alçada  170)
-         (edat  99)
-         (fumador  1)
-         (genere  "home")
-         (grau_sedentarisme  4)
-         (nom  "Joan")
-         (pes  80)
-         (ritme_cardiac_repos  70)
+         (intensitat  4)
     )
 
     ([Natación] of Resistencia
+         (intensitat  3)
     )
 
     ([Obesidad] of Otros
@@ -158,19 +161,22 @@
     ([Osteoporosis] of Locomotiva
     )
 
-    ([Patricio] of Persona
-    )
-
     ([Pesas] of Fortalecimiento
+         (intensitat  2)
     )
 
     ([Sentadillas] of Fortalecimiento
+         (intensitat  3)
     )
 
     ([Subir-escaleras] of Fortalecimiento
+         (intensitat  1)
     )
 
     ([Trastorno-de-ansiedad] of Otros
+    )
+
+    ([me] of Persona
     )
 
 )
