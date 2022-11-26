@@ -2,45 +2,12 @@
 ;;; ontologiaKBS.clp
 ;;; Translated by owl2clips
 ;;; Translated to CLIPS from ontology ontologiaKBS.owl
-;;; :Date 24/11/2022 19:01:38
-
-(defclass Malaltia "Taxonomia de malaltia."
-    (is-a USER)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Cardiovascular
-    (is-a Malaltia)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Locomotiva
-    (is-a Malaltia)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Otros "Otros tipos de enfermedades, como pueden ser la diabetes, las enfermedades neurológicas, etc"
-    (is-a Malaltia)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Respiratoria
-    (is-a Malaltia)
-    (role concrete)
-    (pattern-match reactive)
-)
+;;; :Date 26/11/2022 11:23:19
 
 (defclass Ejercicio-Fisico
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
-    (multislot incompatible_amb
-        (type INSTANCE)
-        (create-accessor read-write))
     (slot intensitat
         (type SYMBOL)
         (create-accessor read-write))
@@ -66,6 +33,39 @@
 
 (defclass Resistencia
     (is-a Ejercicio-Fisico)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Malaltia "Taxonomia de malaltia."
+    (is-a USER)
+    (role concrete)
+    (pattern-match reactive)
+    (multislot recomenable_amb
+        (type INSTANCE)
+        (create-accessor read-write))
+)
+
+(defclass Cardiovascular
+    (is-a Malaltia)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Locomotiva
+    (is-a Malaltia)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Otros "Otros tipos de enfermedades, como pueden ser la diabetes, las enfermedades neurológicas, etc"
+    (is-a Malaltia)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Respiratoria
+    (is-a Malaltia)
     (role concrete)
     (pattern-match reactive)
 )
@@ -109,13 +109,10 @@
     )
 
     ([Artritis] of Locomotiva
-    )
-
-    ([Asma] of Respiratoria
+         (recomenable_amb  [Andar-rápido] [Baile] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas])
     )
 
     ([Baile] of Flexibilización
-         (incompatible_amb  [Trastorno-de-ansiedad])
          (intensitat  2)
     )
 
@@ -123,28 +120,36 @@
          (intensitat  1)
     )
 
+    ([Cancer] of Otros
+         (recomenable_amb  [Caminar] [Correr] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas])
+    )
+
     ([Correr] of Resistencia
-         (incompatible_amb  [Fibrosis-quistica])
          (intensitat  4)
     )
 
     ([Diabetes] of Otros
+         (recomenable_amb  [Andar-rápido] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas])
+    )
+
+    ([Enfermedad-cardiovascular-ateroesclerotica] of Cardiovascular
+         (recomenable_amb  [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas])
     )
 
     ([Enfermedad-pulmonar-obstructiva-cronica] of Respiratoria
+         (recomenable_amb  [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas])
     )
 
     ([Fibrosis-quistica] of Respiratoria
+         (recomenable_amb  [Correr] [Ir-en-bici] [Natación] [Pesas])
     )
 
     ([Gimnasia] of Resistencia
          (intensitat  3)
     )
 
-    ([Infarto-agudo-miocardio] of Cardiovascular
-    )
-
-    ([Insuficiencia-cardiaca] of Cardiovascular
+    ([Hipertension] of Cardiovascular
+         (recomenable_amb  [Andar-rápido] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas])
     )
 
     ([Ir-en-bici] of Resistencia
@@ -156,9 +161,11 @@
     )
 
     ([Obesidad] of Otros
+         (recomenable_amb  [Andar-rápido] [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas])
     )
 
     ([Osteoporosis] of Locomotiva
+         (recomenable_amb  [Caminar] [Gimnasia] [Subir-escaleras])
     )
 
     ([Pesas] of Fortalecimiento
@@ -174,6 +181,7 @@
     )
 
     ([Trastorno-de-ansiedad] of Otros
+         (recomenable_amb  [Baile] [Caminar] [Correr] [Gimnasia] [Ir-en-bici])
     )
 
     ([me] of Persona

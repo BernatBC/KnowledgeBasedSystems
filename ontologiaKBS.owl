@@ -23,9 +23,8 @@
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#recomenable_amb
 :recomenable_amb rdf:type owl:ObjectProperty ;
                  rdfs:subPropertyOf owl:topObjectProperty ;
-                 rdf:type owl:SymmetricProperty ;
-                 rdfs:domain :Ejercicio-Fisico ;
-                 rdfs:range :Malaltia .
+                 rdfs:domain :Malaltia ;
+                 rdfs:range :Ejercicio-Fisico .
 
 
 #################################################################

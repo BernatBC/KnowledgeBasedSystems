@@ -9,6 +9,16 @@
 ;    " con intensitat " (send ?instancia get-intensitat) crlf)
 ;)
 
+(deftemplate programa-exercici
+  (slot exercici)
+  (slot repeticions)
+  (slot duracio)
+)
+
+(deftemplate programa
+  (multislot llista-exercicis)
+)
+
 (defrule preguntar
   (declare (salience 20))
   ?x <- (object(is-a Persona))
@@ -38,7 +48,6 @@
   (bind ?edat (read))
   (send ?x put-edat ?edat)
   (printout t "Tens " (send ?x get-edat) " anys" crlf crlf)
-  
   (printout t "Quant medeix? (en centímetres) " crlf)
   (printout t ">")
   (bind ?alcada (read))
@@ -72,5 +81,45 @@
   (printout t "Vostè és NO fumador." crlf crlf))
   (printout t "Moltes gràcies per la seva atenció."crlf)
   
+  (printout t "Pateix vostè d'alguna malaltia cardiovascular (Y/N)? " crlf)
+  (bind ?cv (read))
+  (if (eq ?cv Y)
+  then
+    (printout t "Pateix d'hipertensió (Y/N)? " crlf)
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (assert (pateix [me] [Hipertension])))
+    (printout t "Petaix d'ateroesclerosis (Y/N)? " crlf)
+    (bind ?ae (read))
+    (if (eq ?ae Y) then (assert (pateix [me] [Enfermedad-cardiovascular-ateroesclerotica])))
+  )
 
+  ; Següent grup de malalties
+)
+
+(defrule dummy
+  ?x <- (object(is-a Persona))
+  =>
+  (printout t "dummy" crlf)
+)
+
+(defrule determine_best_exercise
+  (declare (salience 10))
+  (printout t "HELLO" crlf)
+;  ?m <- (object(is-a Malaltia))
+  ?m <- (send [me] get-pateix)
+  =>  
+;  (bind ?pro (assert (programa p)))
+  (bind ?pro (assert (programa)))
+  (printout t "Es crea el programa " ?pro crlf)
+;  (if (pateix [me] ?m)
+;    then
+    (bind ?x (send ?m get-recomenable_amb))
+    (loop-for-count (?i 1 (length$ ?x)) do
+      ; Per a cada exercici recomenable per a cada malaltia
+      (bind ?var (nth$ ?i ?x))
+      (bind ?temp (assert (programa-exercici)))
+      (modify ?temp (exercici ?var))
+      (printout t "S'afegeix l'exercici " ?var crlf)
+    )
+;  )
 )
