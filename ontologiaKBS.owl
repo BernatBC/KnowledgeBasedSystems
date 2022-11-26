@@ -13,19 +13,19 @@
 #    Object Properties
 #################################################################
 
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#incompatible_amb
-:incompatible_amb rdf:type owl:ObjectProperty ;
-                  rdfs:subPropertyOf owl:topObjectProperty ;
-                  rdf:type owl:SymmetricProperty ;
-                  rdfs:domain :Ejercicio-Fisico ;
-                  rdfs:range :Malaltia .
-
-
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#pateix
 :pateix rdf:type owl:ObjectProperty ;
         rdfs:subPropertyOf owl:topObjectProperty ;
         rdfs:domain :Persona ;
         rdfs:range :Malaltia .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#recomenable_amb
+:recomenable_amb rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty ;
+                 rdf:type owl:SymmetricProperty ;
+                 rdfs:domain :Ejercicio-Fisico ;
+                 rdfs:range :Malaltia .
 
 
 #################################################################
@@ -219,20 +219,20 @@
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Artritis
 :Artritis rdf:type owl:NamedIndividual ,
-                   :Locomotiva .
-
-
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Asma
-:Asma rdf:type owl:NamedIndividual ,
-               :Respiratoria ;
-      :nom "Asma" .
+                   :Locomotiva ;
+          :recomenable_amb :Andar-rápido ,
+                           :Baile ,
+                           :Caminar ,
+                           :Gimnasia ,
+                           :Ir-en-bici ,
+                           :Natación ,
+                           :Pesas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Baile
 :Baile rdf:type owl:NamedIndividual ,
                 :Equilibrio ,
                 :Flexibilización ;
-       :incompatible_amb :Trastorno-de-ansiedad ;
        :intensitat 2 .
 
 
@@ -242,27 +242,64 @@
          :intensitat 1 .
 
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Cancer
+:Cancer rdf:type owl:NamedIndividual ,
+                 :Otros ;
+        :recomenable_amb :Caminar ,
+                         :Correr ,
+                         :Gimnasia ,
+                         :Ir-en-bici ,
+                         :Natación ,
+                         :Pesas ,
+                         :Sentadillas .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Correr
 :Correr rdf:type owl:NamedIndividual ,
                  :Flexibilización ,
                  :Resistencia ;
-        :incompatible_amb :Fibrosis-quistica ;
         :intensitat 4 .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Diabetes
 :Diabetes rdf:type owl:NamedIndividual ,
-                   :Otros .
+                   :Otros ;
+          :recomenable_amb :Andar-rápido ,
+                           :Caminar ,
+                           :Gimnasia ,
+                           :Ir-en-bici ,
+                           :Natación ,
+                           :Pesas ,
+                           :Sentadillas .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Enfermedad-cardiovascular-ateroesclerotica
+:Enfermedad-cardiovascular-ateroesclerotica rdf:type owl:NamedIndividual ,
+                                                     :Cardiovascular ;
+                                            :recomenable_amb :Caminar ,
+                                                             :Gimnasia ,
+                                                             :Ir-en-bici ,
+                                                             :Pesas ,
+                                                             :Sentadillas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Enfermedad-pulmonar-obstructiva-cronica
 :Enfermedad-pulmonar-obstructiva-cronica rdf:type owl:NamedIndividual ,
-                                                  :Respiratoria .
+                                                  :Respiratoria ;
+                                         :recomenable_amb :Caminar ,
+                                                          :Gimnasia ,
+                                                          :Ir-en-bici ,
+                                                          :Pesas ,
+                                                          :Sentadillas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Fibrosis-quistica
 :Fibrosis-quistica rdf:type owl:NamedIndividual ,
-                            :Respiratoria .
+                            :Respiratoria ;
+                   :recomenable_amb :Correr ,
+                                    :Ir-en-bici ,
+                                    :Natación ,
+                                    :Pesas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Gimnasia
@@ -273,14 +310,16 @@
           :intensitat 3 .
 
 
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Infarto-agudo-miocardio
-:Infarto-agudo-miocardio rdf:type owl:NamedIndividual ,
-                                  :Cardiovascular .
-
-
-###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Insuficiencia-cardiaca
-:Insuficiencia-cardiaca rdf:type owl:NamedIndividual ,
-                                 :Cardiovascular .
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Hipertension
+:Hipertension rdf:type owl:NamedIndividual ,
+                       :Cardiovascular ;
+              :recomenable_amb :Andar-rápido ,
+                               :Caminar ,
+                               :Gimnasia ,
+                               :Ir-en-bici ,
+                               :Natación ,
+                               :Pesas ,
+                               :Sentadillas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Ir-en-bici
@@ -299,12 +338,21 @@
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Obesidad
 :Obesidad rdf:type owl:NamedIndividual ,
-                   :Otros .
+                   :Otros ;
+          :recomenable_amb :Andar-rápido ,
+                           :Caminar ,
+                           :Gimnasia ,
+                           :Ir-en-bici ,
+                           :Pesas ,
+                           :Sentadillas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Osteoporosis
 :Osteoporosis rdf:type owl:NamedIndividual ,
-                       :Locomotiva .
+                       :Locomotiva ;
+              :recomenable_amb :Caminar ,
+                               :Gimnasia ,
+                               :Subir-escaleras .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Pesas
@@ -328,7 +376,11 @@
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Trastorno-de-ansiedad
 :Trastorno-de-ansiedad rdf:type owl:NamedIndividual ,
                                 :Otros ;
-                       :incompatible_amb :Baile .
+                       :recomenable_amb :Baile ,
+                                        :Caminar ,
+                                        :Correr ,
+                                        :Gimnasia ,
+                                        :Ir-en-bici .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#me
