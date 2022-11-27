@@ -79,28 +79,87 @@
   (printout t "Vostè és fumador." crlf crlf)
   else
   (printout t "Vostè és NO fumador." crlf crlf))
-  (printout t "Moltes gràcies per la seva atenció."crlf)
+  (printout t "Ara rebrà algunes preguntes referents a les possibles malalties que poden inferir en la creació del programa personalitzat."crlf crlf)
   
-  (printout t "Pateix vostè d'alguna malaltia cardiovascular (Y/N)? " crlf)
+  (printout t "Pateix vostè d'alguna malaltia cardiovascular? (Y/N)" crlf)
+  (printout t ">")
   (bind ?cv (read))
   (if (eq ?cv Y)
   then
-    (printout t "Pateix d'hipertensió (Y/N)? " crlf)
+    (printout t "Pateix d'hipertensió? (Y/N)" crlf)
+    (printout t ">")
     (bind ?ht (read))
     (if (eq ?ht Y) then (assert (pateix [me] [Hipertension])))
-    (printout t "Petaix d'ateroesclerosis (Y/N)? " crlf)
+    (printout t "Pateix d'ateroesclerosis? (Y/N)" crlf)
+    (printout t ">")
     (bind ?ae (read))
     (if (eq ?ae Y) then (assert (pateix [me] [Enfermedad-cardiovascular-ateroesclerotica])))
   )
-
+  (printout t "Proseguim." crlf crlf)
   ; Següent grup de malalties
+  (printout t "Pateix vostè d'alguna malaltia locomotiva? (Y/N)" crlf)
+  (printout t ">")
+  (bind ?cv (read))
+  (if (eq ?cv Y)
+  then
+    (printout t "Pateix d'artritis? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (assert (pateix [me] [Artritis])))
+    (printout t "Pateix d'osteoporosis? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ae (read))
+    (if (eq ?ae Y) then (assert (pateix [me] [Osteoporosis])))
+  )
+  (printout t "Bé, continuem." crlf crlf)
+  ;tercer grup
+  (printout t "Pateix vostè d'alguna malaltia respiratoria? (Y/N)" crlf)
+  (printout t ">")
+  (bind ?cv (read))
+  (if (eq ?cv Y)
+  then
+    (printout t "Pateix de fibrosis quistica? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (assert (pateix [me] [Fibrosis-quistica])))
+    (printout t "Pateix d'EPOC (Enfermetat Pulmonar Obstructiva Cronica)? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ae (read))
+    (if (eq ?ae Y) then (assert (pateix [me] [Enfermedad-pulmonar-obstructiva-cronica])))
+  )
+  (printout t "Ja casi estem." crlf crlf)
+  ;altres
+  (printout t "Pateix d'altres enfermetats? (Y/N)" crlf)
+  (printout t ">")
+  (bind ?cv (read))
+  (if (eq ?cv Y)
+  then
+    (printout t "Pateix d'algun tipus de càncer? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (assert (pateix [me] [Cancer])))
+    (printout t "Té algun tipus de diabetes? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ae (read))
+    (if (eq ?ae Y) then (assert (pateix [me] [Diabetes])))
+    (printout t "Pateix d'obesitat? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (assert (pateix [me] [Obesitat	])))
+    (printout t "Té vostè un tanstorn d'ansietat? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (assert (pateix [me] [Transtorno-de-ansiedad])))
+  )
+  
+  (printout t "Moltes gràcies." crlf crlf)
 )
 
-(defrule dummy
-  ?x <- (object(is-a Persona))
-  =>
-  (printout t "dummy" crlf)
-)
+;(defrule dummy
+;  ?x <- (object(is-a Persona))
+;  =>
+;  (printout t "dummy" crlf)
+;)
 
 (defrule determine_best_exercise
   (declare (salience 10))
