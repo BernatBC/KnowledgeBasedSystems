@@ -89,11 +89,11 @@
     (printout t "Pateix d'hipertensió? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
-    (if (eq ?ht Y) then (assert (pateix [me] [Hipertension])))
+    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Hipertension]))
     (printout t "Pateix d'ateroesclerosis? (Y/N)" crlf)
     (printout t ">")
-    (bind ?ae (read))
-    (if (eq ?ae Y) then (assert (pateix [me] [Enfermedad-cardiovascular-ateroesclerotica])))
+    (bind ?ae (read)) 
+    (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Enfermedad-cardiovascular-ateroesclerotica]))
   )
   (printout t "Proseguim." crlf crlf)
   ; Següent grup de malalties
@@ -105,11 +105,11 @@
     (printout t "Pateix d'artritis? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
-    (if (eq ?ht Y) then (assert (pateix [me] [Artritis])))
+    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Artritis]))
     (printout t "Pateix d'osteoporosis? (Y/N)" crlf)
     (printout t ">")
     (bind ?ae (read))
-    (if (eq ?ae Y) then (assert (pateix [me] [Osteoporosis])))
+    (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Osteoporosis]))
   )
   (printout t "Bé, continuem." crlf crlf)
   ;tercer grup
@@ -121,11 +121,11 @@
     (printout t "Pateix de fibrosis quistica? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
-    (if (eq ?ht Y) then (assert (pateix [me] [Fibrosis-quistica])))
+    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Fibrosis-quistica]))
     (printout t "Pateix d'EPOC (Enfermetat Pulmonar Obstructiva Cronica)? (Y/N)" crlf)
     (printout t ">")
     (bind ?ae (read))
-    (if (eq ?ae Y) then (assert (pateix [me] [Enfermedad-pulmonar-obstructiva-cronica])))
+    (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Enfermedad-pulmonar-obstructiva-cronica]))
   )
   (printout t "Ja casi estem." crlf crlf)
   ;altres
@@ -137,19 +137,19 @@
     (printout t "Pateix d'algun tipus de càncer? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
-    (if (eq ?ht Y) then (assert (pateix [me] [Cancer])))
+    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Cancer]))
     (printout t "Té algun tipus de diabetes? (Y/N)" crlf)
     (printout t ">")
     (bind ?ae (read))
-    (if (eq ?ae Y) then (assert (pateix [me] [Diabetes])))
+    (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Diabetes]))
     (printout t "Pateix d'obesitat? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
-    (if (eq ?ht Y) then (assert (pateix [me] [Obesitat])))
-    (printout t "Té vostè un transtorn d'ansietat? (Y/N)" crlf)
+    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Obesidad]))
+    (printout t "Té vostè un tanstorn d'ansietat? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
-    (if (eq ?ht Y) then (assert (pateix [me] [Transtorno-de-ansiedad])))
+    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Trastorno-de-ansiedad]))
   )
   
   (printout t "Moltes gràcies." crlf crlf)
@@ -163,22 +163,47 @@
 
 (defrule determine_best_exercise
   (declare (salience 10))
-  (printout t "HELLO" crlf)
-;  ?m <- (object(is-a Malaltia))
-  ?m <- (send [me] get-pateix)
-  =>  
-;  (bind ?pro (assert (programa p)))
-  (bind ?pro (assert (programa)))
-  (printout t "Es crea el programa " ?pro crlf)
-;  (if (pateix [me] ?m)
-;    then
-    (bind ?x (send ?m get-recomenable_amb))
-    (loop-for-count (?i 1 (length$ ?x)) do
-      ; Per a cada exercici recomenable per a cada malaltia
-      (bind ?var (nth$ ?i ?x))
-      (bind ?temp (assert (programa-exercici)))
-      (modify ?temp (exercici ?var))
-      (printout t "S'afegeix l'exercici " ?var crlf)
+;   ?m <- (object (is-a Malaltia))
+;   (test (pateix [me] ?m))
+  ?p <- (object (is-a Persona))
+;   ?m <- (pateix [me] ?me)
+;  (bind ?spat (send [me] get-pateix))
+  =>
+  ;(bind ?pro (assert (programa p)))
+  (bind ?mal (send ?p get-pateix))
+  (loop-for-count (?i 1 (length$ $?mal)) do
+    ; For every illness [me] has
+    (bind ?m (nth$ ?i $?mal))
+    (printout t crlf ?m crlf)
+
+    (bind ?list-exs (send ?m get-recomenable_amb))
+
+    (loop-for-count (?j 1 (length$ ?list-exs)) do
+        ; For every recommended activity of the illness
+        (bind ?var (nth$ ?j ?list-exs))
+        (printout t ?var crlf)
+        ;(bind ?exe (assert (programa-exercici pe)))
+        ;(slot-insert$ ?pro llista-exercicis 1 ?exe)
     )
-;  )
+
+    ;(printout t ?pro crlf)
+  )
+;  (bind ?pro (assert (programa p)))
+;  (bind ?pro (assert (programa)))
+;  (printout t "Es crea el programa " ?pro crlf)
+  ;(bind ?spat (send [me] get-pateix))
+;  (printout t ?m crlf)
+;  (if (any-factp ((?f pateix [me] ?m)) TRUE)
+;    then
+;    (bind ?x (send ?m get-recomenable_amb))
+;    (printout t ?m crlf)
+;    (loop-for-count (?i 1 (length$ ?x)) do
+;      ; Per a cada exercici recomenable per a cada malaltia
+;      (bind ?var (nth$ ?i ?x))
+;      (bind ?temp (assert (programa-exercici)))
+;      (modify ?temp (exercici ?var))
+;      (printout t "S'afegeix l'exercici " ?var crlf)
+;    )
+; )
 )
+
