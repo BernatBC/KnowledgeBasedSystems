@@ -46,8 +46,10 @@
   (printout t "Quina edat té vostè? " crlf)
   (printout t ">")
   (bind ?edat (read))
+  (if (>= 64 ?edat) then (printout t "Ho sentim, però aquest programa està destinat a persones majors de 65 anys. Gràcies per la seva atenció." crlf) (exit))
   (send ?x put-edat ?edat)
   (printout t "Tens " (send ?x get-edat) " anys" crlf crlf)
+  
   (printout t "Quant medeix? (en centímetres) " crlf)
   (printout t ">")
   (bind ?alcada (read))
@@ -55,11 +57,17 @@
   (printout t "Medeix " (send ?x get-alçada) " centímetres" crlf crlf crlf)
 
 
- (printout t "Parlem ara una mica de l'estil de vida." crlf crlf)
+  (printout t "Parlem ara una mica de l'estil de vida." crlf crlf)
 
   (printout t "En una escala del 1 (sedentari) al 5 (actiu), on se situaria vostè? " crlf)
   (printout t ">")
   (bind ?graused (read))
+  (if (eq 5 ?graused) 
+  then 
+  (printout t "Ho sentim, però aquest programa està destinat per introduir a les persones grans a l'esport." crlf)
+  (printout t "Considerem que vostè ja està familiaritzat amb l'àmbit esportiu." crlf)
+  (printout t "Gràcies per la seva atenció." crlf) (exit))
+  
   (send ?x put-grau_sedentarisme ?graused)
   (printout t "" crlf crlf)
   
@@ -174,7 +182,7 @@
   (loop-for-count (?i 1 (length$ $?mal)) do
     ; For every illness [me] has
     (bind ?m (nth$ ?i $?mal))
-    (printout t crlf ?m crlf)
+    (printout t crlf "Exercicis recomanats per la malaltia: " ?m crlf)
 
     (bind ?list-exs (send ?m get-recomenable_amb))
 
