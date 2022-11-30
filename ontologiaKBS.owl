@@ -13,6 +13,13 @@
 #    Object Properties
 #################################################################
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#incompatible_amb
+:incompatible_amb rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf owl:topObjectProperty ;
+                  rdfs:domain :Part-del-cos ;
+                  rdfs:range :Ejercicio-Fisico .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#pateix
 :pateix rdf:type owl:ObjectProperty ;
         rdfs:subPropertyOf owl:topObjectProperty ;
@@ -25,6 +32,13 @@
                  rdfs:subPropertyOf owl:topObjectProperty ;
                  rdfs:domain :Malaltia ;
                  rdfs:range :Ejercicio-Fisico .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#te_immobil
+:te_immobil rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf owl:topObjectProperty ;
+            rdfs:domain :Persona ;
+            rdfs:range :Part-del-cos .
 
 
 #################################################################
@@ -158,7 +172,8 @@
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Ejercicio-Fisico
-:Ejercicio-Fisico rdf:type owl:Class .
+:Ejercicio-Fisico rdf:type owl:Class ;
+                  owl:disjointWith :Part-del-cos .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Equilibrio
@@ -183,6 +198,7 @@
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Malaltia
 :Malaltia rdf:type owl:Class ;
+          owl:disjointWith :Part-del-cos ;
           rdfs:comment "Taxonomia de malaltia." .
 
 
@@ -190,6 +206,11 @@
 :Otros rdf:type owl:Class ;
        rdfs:subClassOf :Malaltia ;
        rdfs:comment "Otros tipos de enfermedades, como pueden ser la diabetes, las enfermedades neurológicas, etc" .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Part-del-cos
+:Part-del-cos rdf:type owl:Class ;
+              owl:disjointWith :Persona .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Persona
@@ -235,6 +256,30 @@
        :intensitat 2 .
 
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Braç
+:Braç rdf:type owl:NamedIndividual ,
+               :Part-del-cos ;
+      :incompatible_amb :Baile ,
+                        :Gimnasia ,
+                        :Ir-en-bici ,
+                        :Natación ,
+                        :Pesas .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Cama
+:Cama rdf:type owl:NamedIndividual ,
+               :Part-del-cos ;
+      :incompatible_amb :Andar-rápido ,
+                        :Baile ,
+                        :Caminar ,
+                        :Correr ,
+                        :Gimnasia ,
+                        :Ir-en-bici ,
+                        :Natación ,
+                        :Sentadillas ,
+                        :Subir-escaleras .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Caminar
 :Caminar rdf:type owl:NamedIndividual ,
                   :Flexibilización ;
@@ -251,6 +296,14 @@
                          :Natación ,
                          :Pesas ,
                          :Sentadillas .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Cervicals
+:Cervicals rdf:type owl:NamedIndividual ,
+                    :Part-del-cos ;
+           :incompatible_amb :Baile ,
+                             :Gimnasia ,
+                             :Natación .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Correr
@@ -290,6 +343,17 @@
                                                           :Ir-en-bici ,
                                                           :Pesas ,
                                                           :Sentadillas .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Esquena
+:Esquena rdf:type owl:NamedIndividual ,
+                  :Part-del-cos ;
+         :incompatible_amb :Baile ,
+                           :Correr ,
+                           :Gimnasia ,
+                           :Ir-en-bici ,
+                           :Natación ,
+                           :Sentadillas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Fibrosis-quistica
@@ -380,6 +444,16 @@
                                         :Correr ,
                                         :Gimnasia ,
                                         :Ir-en-bici .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Tronc
+:Tronc rdf:type owl:NamedIndividual ,
+                :Part-del-cos ;
+       :incompatible_amb :Baile ,
+                         :Correr ,
+                         :Gimnasia ,
+                         :Natación ,
+                         :Sentadillas .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#me

@@ -159,6 +159,38 @@
     (bind ?ht (read))
     (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Trastorno-de-ansiedad]))
   )
+
+  ;problemes de mobilitat a alguna part del cos
+  (printout t "Pateix problemes de mobilitat en alguna part del cos? (Y/N)" crlf)
+  (printout t ">")
+  (bind ?cv (read))
+  (if (eq ?cv Y)
+  then
+    (printout t "Pateix problemes de mobilitat a un braç o ambdos braços? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Braç]))
+    
+    (printout t "Pateix problemes de mobilitat a una cama o ambdues cames? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Cama]))
+
+    (printout t "Pateix problemes de mobilitat a les cervicals? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Cervicals]))
+
+    (printout t "Pateix problemes de mobilitat a l'esquena? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Esquena]))
+
+    (printout t "Pateix problemes de mobilitat al tronc? (Y/N)" crlf)
+    (printout t ">")
+    (bind ?ht (read))
+    (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Tronc]))
+  )
   
   (printout t "Moltes gràcies." crlf crlf)
 )
@@ -194,6 +226,8 @@
         ;(slot-insert$ ?pro llista-exercicis 1 ?exe)
     )
 
+    
+
     ;(printout t ?pro crlf)
   )
 ;  (bind ?pro (assert (programa p)))
@@ -213,5 +247,17 @@
 ;      (printout t "S'afegeix l'exercici " ?var crlf)
 ;    )
 ; )
+
+    ;iterem per les parts immobils
+  (bind ?parts (send ?p get-te_immobil))
+    (loop-for-count (?i 1 (length$ $?parts)) do
+      ; For every part immobil [me] has
+      (bind ?par (nth$ ?i $?parts))
+      (printout t crlf "Exercicis incompatibles amb la part del cos: " ?par crlf)
+      (bind ?list-exs (send ?par get-incompatible_amb))
+      (loop-for-count (?j 1 (length$ ?list-exs)) do
+        (bind ?var (nth$ ?j ?list-exs))
+        (printout t ?var crlf))
+    )
 )
 
