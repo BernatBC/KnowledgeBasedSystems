@@ -9,15 +9,6 @@
 ;    " con intensitat " (send ?instancia get-intensitat) crlf)
 ;)
 
-(deftemplate programa-exercici
-  (slot exercici)
-  (slot repeticions)
-  (slot duracio)
-)
-
-(deftemplate programa
-  (multislot llista-exercicis)
-)
 
 (defrule preguntar
   (declare (salience 20))
@@ -221,7 +212,11 @@
     (loop-for-count (?j 1 (length$ ?list-exs)) do
         ; For every recommended activity of the illness
         (bind ?var (nth$ ?j ?list-exs))
-        (assert (fer-exercici ?var))
+        ;(assert (fer-exercici ?var))
+        (bind ?x (send [prog] get-conte_exercici))
+        (if (not(member$ ?var ?x)) then
+          (slot-insert$ [prog] conte_exercici 1 ?var)
+        )
         (printout t ?var crlf)
         ;(bind ?exe (assert (programa-exercici pe)))
         ;(slot-insert$ ?pro llista-exercicis 1 ?exe)
@@ -257,11 +252,16 @@
     (bind ?list-exs (send ?par get-incompatible_amb))
     (loop-for-count (?j 1 (length$ ?list-exs)) do
       (bind ?var (nth$ ?j ?list-exs))
-      ;(if (eq ?var exercicis) then
-      ;  ?something <- (exercicis $?var)
-      ;  (retract ?something))
-      ;)
-      (assert (incompatible ?var))
+      (bind ?x (send [prog] get-conte_exercici))
+        (if (member$ ?var ?x) then
+          (loop-for-count (?k 1 (length$ ?x)) do
+            (bind ?var2 (nth$ ?k ?x))
+            (if (eq ?var2 ?var) then
+              (slot-delete$ [prog] conte_exercici ?k ?k)
+            )
+          )
+        )
+
       (printout t ?var crlf))
 ))
 
@@ -269,11 +269,12 @@
 (defrule write-difference
 (declare (salience 5))
 ;(fer-exercici $? ?v $?)
-?d <- (fer-exercici ?d)
-(test (any-factp ((?d ))))
-(test (any-factp ((?d incompatible)) TRUE))
+;?d <- (fer-exercici ?d)
+;(test (any-factp ((?d ))))
+?prog <- (object (is-a Programa))
+;(test (any-factp ((?d incompatible)) TRUE))
 ;(test (not (member$ ?v ?u))) ;?v in ?u
 =>
-(printout t "You should do " ?d crlf))
+(bind ?x (send [prog] get-conte_exercici))
+(printout t "You should do " ?x crlf))
 
-s

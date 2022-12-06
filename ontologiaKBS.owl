@@ -13,6 +13,12 @@
 #    Object Properties
 #################################################################
 
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#conte_exercici
+:conte_exercici rdf:type owl:ObjectProperty ;
+                rdfs:domain :Programa ;
+                rdfs:range :Ejercicio-Fisico .
+
+
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#incompatible_amb
 :incompatible_amb rdf:type owl:ObjectProperty ;
                   rdfs:subPropertyOf owl:topObjectProperty ;
@@ -215,6 +221,10 @@
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Persona
 :Persona rdf:type owl:Class .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Programa
+:Programa rdf:type owl:Class .
 
 
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#Resistencia
@@ -459,6 +469,11 @@
 ###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#me
 :me rdf:type owl:NamedIndividual ,
              :Persona .
+
+
+###  http://www.semanticweb.org/bernat/ontologies/2022/10/ontologiaKBS#prog
+:prog rdf:type owl:NamedIndividual ,
+               :Programa .
 
 
 #################################################################

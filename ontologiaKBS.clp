@@ -2,7 +2,7 @@
 ;;; ontologiaKBS.clp
 ;;; Translated by owl2clips
 ;;; Translated to CLIPS from ontology ontologiaKBS.owl
-;;; :Date 30/11/2022 16:38:52
+;;; :Date 06/12/2022 11:51:06
 
 (defclass Malaltia "Taxonomia de malaltia."
     (is-a USER)
@@ -115,6 +115,15 @@
         (create-accessor read-write))
 )
 
+(defclass Programa
+    (is-a USER)
+    (role concrete)
+    (pattern-match reactive)
+    (multislot conte_exercici
+        (type INSTANCE)
+        (create-accessor read-write))
+)
+
 (definstances instances
     ([Andar-rápido] of Fortalecimiento
          (intensitat  2)
@@ -217,6 +226,9 @@
     )
 
     ([me] of Persona
+    )
+
+    ([prog] of Programa
     )
 
 )
