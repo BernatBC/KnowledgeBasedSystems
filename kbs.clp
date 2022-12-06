@@ -221,6 +221,7 @@
     (loop-for-count (?j 1 (length$ ?list-exs)) do
         ; For every recommended activity of the illness
         (bind ?var (nth$ ?j ?list-exs))
+        (assert (fer-exercici ?var))
         (printout t ?var crlf)
         ;(bind ?exe (assert (programa-exercici pe)))
         ;(slot-insert$ ?pro llista-exercicis 1 ?exe)
@@ -246,18 +247,33 @@
 ;      (modify ?temp (exercici ?var))
 ;      (printout t "S'afegeix l'exercici " ?var crlf)
 ;    )
-; )
-
+;)
     ;iterem per les parts immobils
   (bind ?parts (send ?p get-te_immobil))
-    (loop-for-count (?i 1 (length$ $?parts)) do
-      ; For every part immobil [me] has
-      (bind ?par (nth$ ?i $?parts))
-      (printout t crlf "Exercicis incompatibles amb la part del cos: " ?par crlf)
-      (bind ?list-exs (send ?par get-incompatible_amb))
-      (loop-for-count (?j 1 (length$ ?list-exs)) do
-        (bind ?var (nth$ ?j ?list-exs))
-        (printout t ?var crlf))
-    )
-)
+  (loop-for-count (?i 1 (length$ $?parts)) do
+    ; For every part immobil [me] has
+    (bind ?par (nth$ ?i $?parts))
+    (printout t crlf "Exercicis incompatibles amb la part del cos: " ?par crlf)
+    (bind ?list-exs (send ?par get-incompatible_amb))
+    (loop-for-count (?j 1 (length$ ?list-exs)) do
+      (bind ?var (nth$ ?j ?list-exs))
+      ;(if (eq ?var exercicis) then
+      ;  ?something <- (exercicis $?var)
+      ;  (retract ?something))
+      ;)
+      (assert (incompatible ?var))
+      (printout t ?var crlf))
+))
 
+
+(defrule write-difference
+(declare (salience 5))
+;(fer-exercici $? ?v $?)
+?d <- (fer-exercici ?d)
+(test (any-factp ((?d ))))
+(test (any-factp ((?d incompatible)) TRUE))
+;(test (not (member$ ?v ?u))) ;?v in ?u
+=>
+(printout t "You should do " ?d crlf))
+
+s
