@@ -276,5 +276,26 @@
 ;(test (not (member$ ?v ?u))) ;?v in ?u
 =>
 (bind ?x (send [prog] get-conte_exercici))
-(printout t "You should do " ?x crlf))
+(printout t crlf)
+(printout t "PROGRAMA D'EXERCICIS RECOMENATS" crlf)
+(printout t crlf)
+(if (eq 0 (length$ ?x)) then
+  (printout t "Ho sentim, no hem pogut generar un programa adient per a vostè." crlf)
+  (printout t "O bé no pateix de cap malaltia, o bé no li podem recomenar cap exercici físic." crlf)
+  (exit)
+)
+(loop-for-count (?i 1 (length$ ?x)) do
+  (bind ?var (nth$ ?i ?x))
+  (printout t "Recomanem que facis " ?var " ")
+  (bind ?estrelles (send ?var get-intensitat))
+  (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
+  ;calcular temps/repeticions
+  (bind ?repeticions (send ?var get-repeticions))
+  (printout t ?repeticions crlf)
+  (if (> ?repeticions 0) then
+    (printout t "es exercici de repeticions" crlf)
+  )
+  (printout t crlf)
+)
+)
 

@@ -2,7 +2,46 @@
 ;;; ontologiaKBS.clp
 ;;; Translated by owl2clips
 ;;; Translated to CLIPS from ontology ontologiaKBS.owl
-;;; :Date 06/12/2022 11:51:06
+;;; :Date 07/12/2022 11:04:03
+
+(defclass Ejercicio-Fisico
+    (is-a USER)
+    (role concrete)
+    (pattern-match reactive)
+    (multislot duracio
+        (type SYMBOL)
+        (create-accessor read-write))
+    (slot intensitat
+        (type SYMBOL)
+        (create-accessor read-write))
+    (multislot repeticions
+        (type SYMBOL)
+        (create-accessor read-write))
+)
+
+(defclass Equilibrio
+    (is-a Ejercicio-Fisico)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Flexibilización
+    (is-a Ejercicio-Fisico)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Fortalecimiento
+    (is-a Ejercicio-Fisico)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Resistencia
+    (is-a Ejercicio-Fisico)
+    (role concrete)
+    (pattern-match reactive)
+)
 
 (defclass Malaltia "Taxonomia de malaltia."
     (is-a USER)
@@ -33,39 +72,6 @@
 
 (defclass Respiratoria
     (is-a Malaltia)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Ejercicio-Fisico
-    (is-a USER)
-    (role concrete)
-    (pattern-match reactive)
-    (slot intensitat
-        (type SYMBOL)
-        (create-accessor read-write))
-)
-
-(defclass Equilibrio
-    (is-a Ejercicio-Fisico)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Flexibilización
-    (is-a Ejercicio-Fisico)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Fortalecimiento
-    (is-a Ejercicio-Fisico)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Resistencia
-    (is-a Ejercicio-Fisico)
     (role concrete)
     (pattern-match reactive)
 )
@@ -126,7 +132,9 @@
 
 (definstances instances
     ([Andar-rápido] of Fortalecimiento
+         (duracio  20)
          (intensitat  2)
+         (repeticions  0)
     )
 
     ([Artritis] of Locomotiva
@@ -134,7 +142,9 @@
     )
 
     ([Baile] of Flexibilización
+         (duracio  20)
          (intensitat  2)
+         (repeticions  0)
     )
 
     ([Braç] of Part-del-cos
@@ -146,7 +156,9 @@
     )
 
     ([Caminar] of Flexibilización
+         (duracio  20)
          (intensitat  1)
+         (repeticions  0)
     )
 
     ([Cancer] of Otros
@@ -158,7 +170,9 @@
     )
 
     ([Correr] of Resistencia
+         (duracio  20)
          (intensitat  4)
+         (repeticions  0)
     )
 
     ([Diabetes] of Otros
@@ -182,7 +196,9 @@
     )
 
     ([Gimnasia] of Resistencia
+         (duracio  30)
          (intensitat  3)
+         (repeticions  0)
     )
 
     ([Hipertension] of Cardiovascular
@@ -190,11 +206,15 @@
     )
 
     ([Ir-en-bici] of Resistencia
+         (duracio  20)
          (intensitat  4)
+         (repeticions  0)
     )
 
     ([Natación] of Resistencia
+         (duracio  20)
          (intensitat  3)
+         (repeticions  0)
     )
 
     ([Obesidad] of Otros
@@ -207,14 +227,18 @@
 
     ([Pesas] of Fortalecimiento
          (intensitat  2)
+         (repeticions  20)
     )
 
     ([Sentadillas] of Fortalecimiento
          (intensitat  3)
+         (repeticions  20)
     )
 
     ([Subir-escaleras] of Fortalecimiento
+         (duracio  20)
          (intensitat  1)
+         (repeticions  0)
     )
 
     ([Trastorno-de-ansiedad] of Otros
