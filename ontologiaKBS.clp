@@ -8,13 +8,13 @@
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
-    (multislot duracio
+    (slot duracio
         (type SYMBOL)
         (create-accessor read-write))
     (slot intensitat
         (type SYMBOL)
         (create-accessor read-write))
-    (multislot repeticions
+    (slot repeticions
         (type SYMBOL)
         (create-accessor read-write))
 )

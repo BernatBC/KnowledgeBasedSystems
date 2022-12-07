@@ -291,11 +291,17 @@
   (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
   ;calcular temps/repeticions
   (bind ?repeticions (send ?var get-repeticions))
-  (printout t ?repeticions crlf)
-  (if (> ?repeticions 0) then
-    (printout t "es exercici de repeticions" crlf)
-  )
+  (bind ?duracio (send ?var get-duracio))
   (printout t crlf)
+  (if (> ?repeticions 0) then
+   (printout t "Amb " (integer (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))) " repeticions")
+  else 
+  (printout t "Amb " (integer (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))) " minuts de duracio")
+  )
+  (printout t crlf crlf)
 )
+  (printout t crlf)
+  (printout t "Les estrelles simbolitzen el grau de dificultat de cada exercici" crlf)
+
 )
 
