@@ -14,3 +14,6 @@ llista d'exercicis adequats per a aquesta malaltia. També es pregunta si l'usua
 exercicis de la llista prèviament obtinguda.
 
 <És un prototip inicial, falten alguns exercicis i malalties, s'haurà d'acabar de refinar.>
+
+**NOTA per nosaltres: Després de regenerar ontologiaKBS.clp, cal canviar els
+camps duració i repeticions de multislot a slot.**
