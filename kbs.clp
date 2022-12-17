@@ -37,7 +37,7 @@
   (printout t "Tens " (send ?x get-edat) " anys" crlf crlf)
   
   ;Les dues preguntes següents, preguntar per l'alçada i el pes de la persona ens servirà per identificar si aquest/a pateix d'obesitat.
-  ;Podem calcular el BMI (Body Mass Index, Index de Massa Corporal) amb la següent fórmula: BMI = pes*alçada^2  -> pes en quilograms, alçada en metres
+  ;Podem calcular el BMI (Body Mass Index, Index de Massa Corporal) amb la següent fórmula: BMI = pes/alçada^2  -> pes en quilograms, alçada en metres
   ;Segons l'Organització Mundial de la salut, una persona pateix d'obesitat quan el seu BMI és igual o superior a 30.
   (printout t "Quant medeix? (en centímetres) " crlf)
   (printout t ">")
@@ -50,7 +50,9 @@
   (bind ?pes (read))
   (send ?x put-pes ?pes)
   (printout t "Pesa " (send ?x get-pes) " quilograms" crlf crlf crlf)
-  (if (>= (* ?pes (** (/ ?alcada 100) 2)) 30) then (slot-insert$ [me] pateix 1 [Obesidad]))
+  ;(printout t "BMI: " (/ ?pes (** (/ ?alcada 100) 2)) crlf)
+  (if (>= (/ ?pes (** (/ ?alcada 100) 2)) 30) then (slot-insert$ [me] pateix 1 [Obesidad]))
+  
 
 
   (printout t "Parlem ara una mica de l'estil de vida." crlf crlf)
@@ -277,7 +279,7 @@
 ; llavors s'informa que no s'ha pogut desenvolupar un programa per a les seves característiques (cal remarcar que el número mínim de sesions a la setmana ha de ser 3).
 (if (> 3 (length$ ?x)) then
   (printout t "Ho sentim, no hem pogut generar un programa adient per a vostè." crlf)
-  (printout t "O bé no pateix de cap malaltia, o bé no li podem recomenar cap exercici físic." crlf)
+  (printout t "O bé no pateix de cap malaltia, o bé no li podem recomanar cap exercici físic." crlf)
   (exit)
 )
 
