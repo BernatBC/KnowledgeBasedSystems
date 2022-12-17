@@ -9,7 +9,7 @@
 ;    " con intensitat " (send ?instancia get-intensitat) crlf)
 ;)
 
-
+; Set de preguntes que ens permetran classificar a la persona
 (defrule preguntar
   (declare (salience 20))
   ?x <- (object(is-a Persona))
@@ -18,7 +18,7 @@
   (printout t "Hola! Benvingut al programa d'inclusió a l'esport per les persones grans." crlf)
   (printout t "Primer de tot rebrà algunes preguntes, per tal d'obtenir un programa d'exercicis personalitzat especialment per a vostè." crlf)
   (printout t "Parlem primer una mica de les seves dades generals." crlf crlf)
-  
+  ; Preguntes introductòries
   (printout t "Amb quin gènere es sent més identificat?" crlf)
   (printout t "home" crlf)
   (printout t "dona" crlf)
@@ -33,7 +33,9 @@
   (bind ?nombre (read))
   (send ?x put-nom ?nombre)
   (printout t "Encantat, " (send ?x get-nom) crlf crlf)
-
+  ; Aquesta pregunta ens servirà per dos coses:
+  ; 1- Si la persona té menys de 65 anys expliquem que aquest aplicatiu està destinat a ajudar a les persones majors de 65 i que, per tant, no pot continuar.
+  ; 2- Si la persona té més de 65 anys la seva edat serà utilitzada per afinar el nombre de dies setmanals del programa.
   (printout t "Quina edat té vostè? " crlf)
   (printout t ">")
   (bind ?edat (read))
@@ -49,7 +51,8 @@
 
 
   (printout t "Parlem ara una mica de l'estil de vida." crlf crlf)
-
+  ; El grau de sedentarisme és un aspecte clau a l'hora de decidir com serà el plan d'exercicis de la persona.
+  ; Si la persona té grau 
   (printout t "En una escala del 1 (sedentari) al 5 (actiu), on se situaria vostè? " crlf)
   (printout t ">")
   (bind ?graused (read))
@@ -69,11 +72,11 @@
   (printout t (send ?x get-ritme_cardiac_repos) " polsacions per minut." crlf crlf)
   
   (printout t "Per últim, vostè és una persona fumadora?."crlf)
-  (printout t "En cas afirmatiu inserti un 1, en cas contrari un 0." crlf)
+  (printout t "En cas afirmatiu inserti un 0, en cas contrari un 1." crlf)
   (printout t ">")
   (bind ?fuma (read))
   (send ?x put-fumador ?fuma)
-  (if (eq ?fuma 1)
+  (if (eq ?fuma 0)
   then
   (printout t "Vostè és fumador." crlf crlf)
   else
@@ -275,26 +278,31 @@
 ;(test (any-factp ((?d incompatible)) TRUE))
 ;(test (not (member$ ?v ?u))) ;?v in ?u
 =>
+(bind ?numdays  (integer (+ 3 (* 4 ( + (+ (* 0.1 (- (send [me] get-grau_sedentarisme) 1)) (* 0.1 (send [me] get-fumador)) )  (* 0.6 (/ (- 110 (send [me] get-edat)) 45)))))))
+(printout t "Nombre de dies = " ?numdays crlf)
 (bind ?x (send [prog] get-conte_exercici))
 (printout t crlf)
 (printout t "PROGRAMA D'EXERCICIS RECOMENATS" crlf)
 (printout t crlf)
-(if (eq 0 (length$ ?x)) then
+(if (> 3 (length$ ?x)) then
   (printout t "Ho sentim, no hem pogut generar un programa adient per a vostè." crlf)
   (printout t "O bé no pateix de cap malaltia, o bé no li podem recomenar cap exercici físic." crlf)
   (exit)
 )
-(loop-for-count (?i 1 (length$ ?x)) do
-  (bind ?var (nth$ ?i ?x))
-  (bind ?day (mod (- ?i 1) 7))
+; loop de les setmanes on s'incrementes les repeticions/duració
+(loop-for-count (?week 0 3) do
+  (printout t "SETMANA " (+ 1 ?week) crlf crlf)
+  (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
+    (bind ?var (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
 
-  (if (eq ?day 0) then (printout t "DILLUNS" crlf)
-  else (if (eq ?day 1) then (printout t "DIMARTS" crlf)
-  else (if (eq ?day 2) then (printout t "DIMECRES" crlf)
-  else (if (eq ?day 3) then (printout t "DIJOUS" crlf)
-  else (if (eq ?day 4) then (printout t "DIVENDRES" crlf)
-  else (if (eq ?day 5) then (printout t "DISSABTE" crlf)
-  else (if (eq ?day 6) then (printout t "DIUMENGE" crlf))))))))
+  (if (eq ?day_of_week 0) then (printout t "DILLUNS" crlf)
+  else (if (and (eq ?day_of_week 1) (> ?numdays 4)) then (printout t "DIMARTS" crlf)
+  else (if (or (and (eq ?day_of_week 1) (< ?numdays 5)) (and (eq ?day_of_week 2) (> ?numdays 5))) then (printout t "DIMECRES" crlf)
+  else (if (or (and (eq ?day_of_week 2) (eq ?numdays 5)) (and (eq ?day_of_week 3) (> ?numdays 5))) then (printout t "DIJOUS" crlf)
+  else (if (or (or (and (eq ?day_of_week 2) (< ?numdays 5)) (and (eq ?day_of_week 3) (eq ?numdays 5))) (and (eq ?day_of_week 4) (> ?numdays 5))) then (printout t "DIVENDRES" crlf)
+  else (if (and (eq ?day_of_week 5) (> ?numdays 5)) then (printout t "DISSABTE" crlf)
+  else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
+
 
   (printout t "Recomanem que facis " ?var " ")
   (bind ?estrelles (send ?var get-intensitat))
@@ -304,12 +312,46 @@
   (bind ?duracio (send ?var get-duracio))
   (printout t crlf) 
   (if (> ?repeticions 0) then
-   (printout t "Amb " (integer (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))) " repeticions")
+   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " repeticions")
   else 
-  (printout t "Amb " (integer (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))) " minuts de duracio")
+  (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " minuts de duracio")
   )
   (printout t crlf crlf)
+
+  )
 )
+; loop de les setmanes on es decrementa les repeticions/ dureació
+(loop-for-count (?week 0 2) do
+  (printout t "SETMANA " (+ 5 ?week) crlf crlf)
+  (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
+    (bind ?var (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
+
+  (if (eq ?day_of_week 0) then (printout t "DILLUNS" crlf)
+  else (if (and (eq ?day_of_week 1) (> ?numdays 4)) then (printout t "DIMARTS" crlf)
+  else (if (or (and (eq ?day_of_week 1) (< ?numdays 5)) (and (eq ?day_of_week 2) (> ?numdays 5))) then (printout t "DIMECRES" crlf)
+  else (if (or (and (eq ?day_of_week 2) (eq ?numdays 5)) (and (eq ?day_of_week 3) (> ?numdays 5))) then (printout t "DIJOUS" crlf)
+  else (if (or (or (and (eq ?day_of_week 2) (< ?numdays 5)) (and (eq ?day_of_week 3) (eq ?numdays 5))) (and (eq ?day_of_week 4) (> ?numdays 5))) then (printout t "DIVENDRES" crlf)
+  else (if (and (eq ?day_of_week 5) (> ?numdays 5)) then (printout t "DISSABTE" crlf)
+  else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
+
+
+  (printout t "Recomanem que facis " ?var " ")
+  (bind ?estrelles (send ?var get-intensitat))
+  (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
+  ;calcular temps/repeticions
+  (bind ?repeticions (send ?var get-repeticions))
+  (bind ?duracio (send ?var get-duracio))
+  (printout t crlf) 
+  (if (> ?repeticions 0) then
+   (printout t "Amb " (integer (* (** 0.95 ?week) (* (** 1.07 3) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))))) " repeticions")
+  else 
+  (printout t "Amb " (integer (* (** 0.95 ?week) (* (** 1.07 3) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))))) " minuts de duracio")
+  )
+  (printout t crlf crlf)
+
+  )
+)
+
   (printout t crlf)
   (printout t "Les estrelles simbolitzen el grau de dificultat de cada exercici" crlf)
 
