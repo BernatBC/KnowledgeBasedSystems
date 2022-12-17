@@ -302,7 +302,7 @@
   ;calcular temps/repeticions
   (bind ?repeticions (send ?var get-repeticions))
   (bind ?duracio (send ?var get-duracio))
-  (printout t crlf)
+  (printout t crlf) 
   (if (> ?repeticions 0) then
    (printout t "Amb " (integer (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))) " repeticions")
   else 
