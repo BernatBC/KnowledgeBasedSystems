@@ -159,11 +159,11 @@
     (printout t ">")
     (bind ?ht (read))
     (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Cancer]))
-    (printout t "Té algun tipus de diabetes? (Y/N)" crlf)
+    (printout t "Té algun tipus de diabetis? (Y/N)" crlf)
     (printout t ">")
     (bind ?ae (read))
     (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Diabetes]))
-    (printout t "Té vostè un tanstorn d'ansietat? (Y/N)" crlf)
+    (printout t "Té vostè un trastorn d'ansietat? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
     (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Trastorno-de-ansiedad]))
@@ -267,10 +267,10 @@
 ; Donem més importància a l'edat (60%) després al grau de sedentarisme (30%) i per últim a si la persona és fumadora o no (10%).
 ; En el millor dels casos la persona tindrà pocs anys (al voltant de 65), no serà fumadora i tindrà un grau de sedentarisme 4 -> 7 dies a la setmana.
 (bind ?numdays  (integer (+ 3 (* 4 ( + (+ (* 0.1 (- (send [me] get-grau_sedentarisme) 1)) (* 0.1 (send [me] get-fumador)) )  (* 0.6 (/ (- 110 (send [me] get-edat)) 45)))))))
-(printout t "Nombre de dies = " ?numdays crlf)
+;(printout t "Nombre de dies = " ?numdays crlf)
 (bind ?x (send [prog] get-conte_exercici))
 (printout t crlf)
-(printout t "PROGRAMA D'EXERCICIS RECOMENATS" crlf)
+(printout t "PROGRAMA D'EXERCICIS RECOMANATS" crlf)
 (printout t crlf)
 
 ; Si el número d'exercicis en el conjunt final dels recomanats és menor que 3 (ja sigui per no tenir cap malaltia o per tenir masses "prohibicions" d'exercicis d'acord amb els problemes a parts del cos),
