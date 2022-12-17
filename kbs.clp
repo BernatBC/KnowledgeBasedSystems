@@ -36,6 +36,7 @@
   ; Aquesta pregunta ens servirà per dos coses:
   ; 1- Si la persona té menys de 65 anys expliquem que aquest aplicatiu està destinat a ajudar a les persones majors de 65 i que, per tant, no pot continuar.
   ; 2- Si la persona té més de 65 anys la seva edat serà utilitzada per afinar el nombre de dies setmanals del programa.
+  ; Quan més gran sigui la persona menys dies a la setmana tindrà el programa d'exercicis personalitzat.
   (printout t "Quina edat té vostè? " crlf)
   (printout t ">")
   (bind ?edat (read))
@@ -52,7 +53,9 @@
 
   (printout t "Parlem ara una mica de l'estil de vida." crlf crlf)
   ; El grau de sedentarisme és un aspecte clau a l'hora de decidir com serà el plan d'exercicis de la persona.
-  ; Si la persona té grau 
+  ; Si la persona té grau 5 es considera que ja és molt activa en l'esport i que, per tant, no necessita d'un programa setmanal d'ajuda.
+  ; Altrament si el grau està entre 1 i 4 aquest parametre servirà per afinar el nombre de dies setmanals del programa, igual que l'edat. 
+  ; Quan més alt sigui el grau, més capacitat té la persona i per tant se li proposen més dies a la setmana d'exercicis.
   (printout t "En una escala del 1 (sedentari) al 5 (actiu), on se situaria vostè? " crlf)
   (printout t ">")
   (bind ?graused (read))
@@ -71,6 +74,8 @@
   (send ?x put-ritme_cardiac_repos ?ritme)
   (printout t (send ?x get-ritme_cardiac_repos) " polsacions per minut." crlf crlf)
   
+  ; El resultat d'aquesta pregunta serà l'últim paràmetre que permetrà afinar el número de dies setmanals en els quals es proposen exercicis.
+  ; Si la persona és NO fumadora es considera que és més sana que una persona fumadora i, per tant, se li recomanen més dies d'exercicis a la setmana.
   (printout t "Per últim, vostè és una persona fumadora?."crlf)
   (printout t "En cas afirmatiu inserti un 0, en cas contrari un 1." crlf)
   (printout t ">")
@@ -81,13 +86,21 @@
   (printout t "Vostè és fumador." crlf crlf)
   else
   (printout t "Vostè és NO fumador." crlf crlf))
+
+  ; Començem ara amb les preguntes sobre les malalties de la persona.
+  ; Cada malaltia té associada un grup d'exercicis recomanats (cal remarcar que aquests grups no són disjunts, un exercici pot ser recomenable per més d'una malaltia).
+  ; Quan la persona respon afirmativament a la pregunta de si té una malaltia concreta el sistema afegeix a un conjunt d'exercicis potencialment recomanats els exercicis recomanats per aquesta malaltia.
+  ; Això fa que si una persona no té cap malaltia de les preguntades el sistema no retorni cap exercici ja que es considera que té llibertat per fer cualsevol exercici sense restriccions.
   (printout t "Ara rebrà algunes preguntes referents a les possibles malalties que poden inferir en la creació del programa personalitzat."crlf crlf)
   
+  ; Preguntem per malaties d'àmbit cardiovascular.
   (printout t "Pateix vostè d'alguna malaltia cardiovascular? (Y/N)" crlf)
   (printout t ">")
   (bind ?cv (read))
   (if (eq ?cv Y)
   then
+    ; Totes les preguntes de malalties concretes segueixen el mateix patró.
+    ; Si la persona té la malaltia aquesta s'insereix a un multislot.
     (printout t "Pateix d'hipertensió? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
@@ -98,7 +111,9 @@
     (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Enfermedad-cardiovascular-ateroesclerotica]))
   )
   (printout t "Proseguim." crlf crlf)
+
   ; Següent grup de malalties
+  ; Preguntem per malaties d'àmbit locomotiu.
   (printout t "Pateix vostè d'alguna malaltia locomotiva? (Y/N)" crlf)
   (printout t ">")
   (bind ?cv (read))
@@ -114,7 +129,8 @@
     (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Osteoporosis]))
   )
   (printout t "Bé, continuem." crlf crlf)
-  ;tercer grup
+
+  ; Preguntem per malaties respiratòries.
   (printout t "Pateix vostè d'alguna malaltia respiratoria? (Y/N)" crlf)
   (printout t ">")
   (bind ?cv (read))
@@ -130,7 +146,8 @@
     (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Enfermedad-pulmonar-obstructiva-cronica]))
   )
   (printout t "Ja casi estem." crlf crlf)
-  ;altres
+  
+  ; Per últim preguntem per un grup de diverses malalties diferents.
   (printout t "Pateix d'altres enfermetats? (Y/N)" crlf)
   (printout t ">")
   (bind ?cv (read))
@@ -154,7 +171,9 @@
     (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Trastorno-de-ansiedad]))
   )
 
-  ;problemes de mobilitat a alguna part del cos
+  ; Preguntem ara per posibles problemes a parts del cos que puguin impossibilitar diversos exercicis.
+  ; Cada pregunta va dirigida a una part del cos en concret. Cada part del cos té una sèrie de exercicis "prohibits".
+  ; Si una persona selecciona 
   (printout t "Pateix problemes de mobilitat en alguna part del cos? (Y/N)" crlf)
   (printout t ">")
   (bind ?cv (read))
