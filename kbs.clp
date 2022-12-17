@@ -283,7 +283,7 @@
   (exit)
 )
 
-; El sistema proposa un programa de 6 setmanes d'exercicis (on els dies d'exercici són els mateixos).
+; El sistema proposa un programa de 7 setmanes d'exercicis (on els dies d'exercici són els mateixos).
 ; Durant les primerers 4 setmanes es va incrementant l'intensitat dels exercicis (augmentant el temps o les repeticions) cada setmana.
 (loop-for-count (?week 0 3) do
   (printout t "SETMANA " (+ 1 ?week) crlf crlf)
@@ -328,7 +328,7 @@
 
   )
 )
-; Les últimes dues setmanes es relaxa l'intensitat per no finalitzar el programa en sec.
+; Les últimes tres setmanes es relaxa l'intensitat per no finalitzar el programa en sec.
 ; El procediment es idèntic al de les 4 primeres setmanes però ara el nombre de repeticions / minuts està multiplicat, a més, per 0.95 * num_setmana, fent que cada setmana sigui menys intensa.
 (loop-for-count (?week 0 2) do
   (printout t "SETMANA " (+ 5 ?week) crlf crlf)
