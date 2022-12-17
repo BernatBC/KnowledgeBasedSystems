@@ -1,15 +1,7 @@
 ;            (load "./ontologiaKBS.clp")
 ;            (load "./kbs.clp")
 
-;(defrule imprimir_exercicis
-;    (declare (salience 10))
-;    ?instancia <- (object (is-a Ejercicio-Fisico))
-;    =>
-;    (printout t "Exercici " (instance-name ?instancia)
-;    " con intensitat " (send ?instancia get-intensitat) crlf)
-;)
-
-; Set de preguntes que ens permetran classificar a la persona
+; Set de preguntes que ens permetran classificar a la persona.
 (defrule preguntar
   (declare (salience 20))
   ?x <- (object(is-a Persona))
@@ -173,7 +165,8 @@
 
   ; Preguntem ara per posibles problemes a parts del cos que puguin impossibilitar diversos exercicis.
   ; Cada pregunta va dirigida a una part del cos en concret. Cada part del cos té una sèrie de exercicis "prohibits".
-  ; Si una persona selecciona 
+  ; Si una persona respon afirmativament a una pregunta, indicant que té un problema a una part del cos, el sistema elimina del conjunt d'exercicis potencialment recomanats,
+  ; obtingut a partir de les preguntes referents a les malalties, els exercicis prohibits pel fet de tenir un problema en la part del cos.
   (printout t "Pateix problemes de mobilitat en alguna part del cos? (Y/N)" crlf)
   (printout t ">")
   (bind ?cv (read))
@@ -208,69 +201,39 @@
   (printout t "Moltes gràcies." crlf crlf)
 )
 
-;(defrule dummy
-;  ?x <- (object(is-a Persona))
-;  =>
-;  (printout t "dummy" crlf)
-;)
-
+; Pasem ara a calcular quin es el conjunt d'exercicis resultant.
+; Partim del conjunt de tots els exercicis recomanats d'acord amb les malalties i eliminen tots els exercicis incompatibles en tenir problemes a certes parts del cos.
 (defrule determine_best_exercise
   (declare (salience 10))
-;   ?m <- (object (is-a Malaltia))
-;   (test (pateix [me] ?m))
+
   ?p <- (object (is-a Persona))
-;   ?m <- (pateix [me] ?me)
-;  (bind ?spat (send [me] get-pateix))
   =>
-  ;(bind ?pro (assert (programa p)))
   (bind ?mal (send ?p get-pateix))
   (loop-for-count (?i 1 (length$ $?mal)) do
     ; For every illness [me] has
     (bind ?m (nth$ ?i $?mal))
-    (printout t crlf "Exercicis recomanats per la malaltia: " ?m crlf)
+    ;(printout t crlf "Exercicis recomanats per la malaltia: " ?m crlf)
 
     (bind ?list-exs (send ?m get-recomenable_amb))
 
     (loop-for-count (?j 1 (length$ ?list-exs)) do
         ; For every recommended activity of the illness
         (bind ?var (nth$ ?j ?list-exs))
-        ;(assert (fer-exercici ?var))
         (bind ?x (send [prog] get-conte_exercici))
         (if (not(member$ ?var ?x)) then
           (slot-insert$ [prog] conte_exercici 1 ?var)
         )
-        (printout t ?var crlf)
-        ;(bind ?exe (assert (programa-exercici pe)))
-        ;(slot-insert$ ?pro llista-exercicis 1 ?exe)
+        ;(printout t ?var crlf)
     )
 
-    
-
-    ;(printout t ?pro crlf)
   )
-;  (bind ?pro (assert (programa p)))
-;  (bind ?pro (assert (programa)))
-;  (printout t "Es crea el programa " ?pro crlf)
-  ;(bind ?spat (send [me] get-pateix))
-;  (printout t ?m crlf)
-;  (if (any-factp ((?f pateix [me] ?m)) TRUE)
-;    then
-;    (bind ?x (send ?m get-recomenable_amb))
-;    (printout t ?m crlf)
-;    (loop-for-count (?i 1 (length$ ?x)) do
-;      ; Per a cada exercici recomenable per a cada malaltia
-;      (bind ?var (nth$ ?i ?x))
-;      (bind ?temp (assert (programa-exercici)))
-;      (modify ?temp (exercici ?var))
-;      (printout t "S'afegeix l'exercici " ?var crlf)
-;    )
-;)
-    ;iterem per les parts immobils
+
+  ; Iterem per les parts immobils eliminant exercicis.
   (bind ?parts (send ?p get-te_immobil))
   (loop-for-count (?i 1 (length$ $?parts)) do
     ; For every part immobil [me] has
     (bind ?par (nth$ ?i $?parts))
-    (printout t crlf "Exercicis incompatibles amb la part del cos: " ?par crlf)
+    ;(printout t crlf "Exercicis incompatibles amb la part del cos: " ?par crlf)
     (bind ?list-exs (send ?par get-incompatible_amb))
     (loop-for-count (?j 1 (length$ ?list-exs)) do
       (bind ?var (nth$ ?j ?list-exs))
@@ -284,36 +247,49 @@
           )
         )
 
-      (printout t ?var crlf))
-))
+      ;(printout t ?var crlf))
+)))
 
-
+; Per últim construim el pla d'exercicis d'acord amb els exercicis resultants i dels paràmetres de la persona (per ajustar el nombre de dies setmanals).
 (defrule write-difference
 (declare (salience 5))
-;(fer-exercici $? ?v $?)
-;?d <- (fer-exercici ?d)
-;(test (any-factp ((?d ))))
+
 ?prog <- (object (is-a Programa))
-;(test (any-factp ((?d incompatible)) TRUE))
-;(test (not (member$ ?v ?u))) ;?v in ?u
+
 =>
+; Per obtenir el numero de dies setmanals partim del mínim (3) i ponderem els tres atributs esmentats a dalt (edat, grau sedentarisme i fumador) per tal d'obtenir un interval d'entre 3 i 7 dies.
+; Donem més importància a l'edat (60%) després al grau de sedentarisme (30%) i per últim a si la persona és fumadora o no (10%).
+; En el millor dels casos la persona tindrà pocs anys (al voltant de 65), no serà fumadora i tindrà un grau de sedentarisme 4 -> 7 dies a la setmana.
 (bind ?numdays  (integer (+ 3 (* 4 ( + (+ (* 0.1 (- (send [me] get-grau_sedentarisme) 1)) (* 0.1 (send [me] get-fumador)) )  (* 0.6 (/ (- 110 (send [me] get-edat)) 45)))))))
 (printout t "Nombre de dies = " ?numdays crlf)
 (bind ?x (send [prog] get-conte_exercici))
 (printout t crlf)
 (printout t "PROGRAMA D'EXERCICIS RECOMENATS" crlf)
 (printout t crlf)
+
+; Si el número d'exercicis en el conjunt final dels recomanats és menor que 3 (ja sigui per no tenir cap malaltia o per tenir masses "prohibicions" d'exercicis d'acord amb els problemes a parts del cos),
+; llavors s'informa que no s'ha pogut desenvolupar un programa per a les seves característiques (cal remarcar que el número mínim de sesions a la setmana ha de ser 3).
 (if (> 3 (length$ ?x)) then
   (printout t "Ho sentim, no hem pogut generar un programa adient per a vostè." crlf)
   (printout t "O bé no pateix de cap malaltia, o bé no li podem recomenar cap exercici físic." crlf)
   (exit)
 )
-; loop de les setmanes on s'incrementes les repeticions/duració
+
+; El sistema proposa un programa de 6 setmanes d'exercicis (on els dies d'exercici són els mateixos).
+; Durant les primerers 4 setmanes es va incrementant l'intensitat dels exercicis (augmentant el temps o les repeticions) cada setmana.
 (loop-for-count (?week 0 3) do
   (printout t "SETMANA " (+ 1 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
     (bind ?var (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
 
+  ; Com que no és bó agrupar tots els dies d'exercicis i després deixar un buit fins al final de la setmana hem organitzat els dies de la següent manera.
+  ; Dies setmanals: 3 -> Dies d'exercici: Dilluns, Dimecres i Divendres
+  ; Dies setmanals: 4 -> Dies d'exercici: Dilluns, Dimecres, Divendres i Diumenge
+  ; Dies setmanals: 5 -> Dies d'exercici: Dilluns, Dimarts, Dijous, Divendres i Diumenge. (Descans: Dimecres i Dissabte)
+  ; Dies setmanals: 6 -> Dies d'exercici: Tots els dies excepte el Diumenge.
+  ; Dies setmanals: 7 -> Dies d'exercici: Tots els dies.
+
+  ; A cada dia se li asignarà un exercici de la llista de recomanats final. Quan s'arriba al final de la llista s'asigna un altre cop el primer.
   (if (eq ?day_of_week 0) then (printout t "DILLUNS" crlf)
   else (if (and (eq ?day_of_week 1) (> ?numdays 4)) then (printout t "DIMARTS" crlf)
   else (if (or (and (eq ?day_of_week 1) (< ?numdays 5)) (and (eq ?day_of_week 2) (> ?numdays 5))) then (printout t "DIMECRES" crlf)
@@ -322,7 +298,7 @@
   else (if (and (eq ?day_of_week 5) (> ?numdays 5)) then (printout t "DISSABTE" crlf)
   else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
 
-
+  ; S'imprimeixen ara els exercicis recomanats.
   (printout t "Recomanem que facis " ?var " ")
   (bind ?estrelles (send ?var get-intensitat))
   (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
@@ -330,16 +306,22 @@
   (bind ?repeticions (send ?var get-repeticions))
   (bind ?duracio (send ?var get-duracio))
   (printout t crlf) 
+  ; Ara es calcula el número de repeticions o de minuts de l'exercici, depenent de l'exercici.
+  ; Aquest valor es calcula segons el valor base de l'exercici, el grau de sedentarisme i la dificultat (estrelles) del propi exercici.
+  ; A més, aquest valor es multiplica per un factor que depèn de la setmana fent així un increment de l'intensitat segons la setmana.
   (if (> ?repeticions 0) then
+    ; Si es tracta d'un exercici amb repeticions.
    (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " repeticions")
   else 
+  ; Si es tracta d'un exercici amb minuts.
   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " minuts de duracio")
   )
   (printout t crlf crlf)
 
   )
 )
-; loop de les setmanes on es decrementa les repeticions/ dureació
+; Les últimes dues setmanes es relaxa l'intensitat per no finalitzar el programa en sec.
+; El procediment es idèntic al de les 4 primeres setmanes però ara el nombre de repeticions / minuts està multiplicat, a més, per 0.95 * num_setmana, fent que cada setmana sigui menys intensa.
 (loop-for-count (?week 0 2) do
   (printout t "SETMANA " (+ 5 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
@@ -362,8 +344,10 @@
   (bind ?duracio (send ?var get-duracio))
   (printout t crlf) 
   (if (> ?repeticions 0) then
+  ; Si es tracta d'un exercici amb repeticions.
    (printout t "Amb " (integer (* (** 0.95 ?week) (* (** 1.07 3) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))))) " repeticions")
   else 
+  ; Si es tracta d'un exercici amb minuts.
   (printout t "Amb " (integer (* (** 0.95 ?week) (* (** 1.07 3) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))))) " minuts de duracio")
   )
   (printout t crlf crlf)
