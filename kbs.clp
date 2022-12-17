@@ -74,7 +74,7 @@
   (printout t ">")
   (bind ?ritme (read))
   (send ?x put-ritme_cardiac_repos ?ritme)
-  (printout t (send ?x get-ritme_cardiac_repos) " polsacions per minut." crlf crlf)
+  (printout t (send ?x get-ritme_cardiac_repos) " pulsacions per minut." crlf crlf)
   
   ; El resultat d'aquesta pregunta serà l'últim paràmetre que permetrà afinar el número de dies setmanals en els quals es proposen exercicis.
   ; Si la persona és NO fumadora es considera que és més sana que una persona fumadora i, per tant, se li recomanen més dies d'exercicis a la setmana.
