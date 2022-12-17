@@ -36,11 +36,21 @@
   (send ?x put-edat ?edat)
   (printout t "Tens " (send ?x get-edat) " anys" crlf crlf)
   
+  ;Les dues preguntes següents, preguntar per l'alçada i el pes de la persona ens servirà per identificar si aquest/a pateix d'obesitat.
+  ;Podem calcular el BMI (Body Mass Index, Index de Massa Corporal) amb la següent fórmula: BMI = pes*alçada^2  -> pes en quilograms, alçada en metres
+  ;Segons l'Organització Mundial de la salut, una persona pateix d'obesitat quan el seu BMI és igual o superior a 30.
   (printout t "Quant medeix? (en centímetres) " crlf)
   (printout t ">")
   (bind ?alcada (read))
   (send ?x put-alçada ?alcada)
   (printout t "Medeix " (send ?x get-alçada) " centímetres" crlf crlf crlf)
+
+  (printout t "Quant pesa? (en quilograms) " crlf)
+  (printout t ">")
+  (bind ?pes (read))
+  (send ?x put-pes ?pes)
+  (printout t "Pesa " (send ?x get-pes) " quilograms" crlf crlf crlf)
+  (if (>= (* ?pes (** (/ ?alcada 100) 2)) 30) then (slot-insert$ [me] pateix 1 [Obesidad]))
 
 
   (printout t "Parlem ara una mica de l'estil de vida." crlf crlf)
@@ -153,10 +163,6 @@
     (printout t ">")
     (bind ?ae (read))
     (if (eq ?ae Y) then (slot-insert$ [me] pateix 1 [Diabetes]))
-    (printout t "Pateix d'obesitat? (Y/N)" crlf)
-    (printout t ">")
-    (bind ?ht (read))
-    (if (eq ?ht Y) then (slot-insert$ [me] pateix 1 [Obesidad]))
     (printout t "Té vostè un tanstorn d'ansietat? (Y/N)" crlf)
     (printout t ">")
     (bind ?ht (read))
