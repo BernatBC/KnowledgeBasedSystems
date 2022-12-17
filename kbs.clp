@@ -286,6 +286,16 @@
 )
 (loop-for-count (?i 1 (length$ ?x)) do
   (bind ?var (nth$ ?i ?x))
+  (bind ?day (mod (- ?i 1) 7))
+
+  (if (eq ?day 0) then (printout t "DILLUNS" crlf)
+  else (if (eq ?day 1) then (printout t "DIMARTS" crlf)
+  else (if (eq ?day 2) then (printout t "DIMECRES" crlf)
+  else (if (eq ?day 3) then (printout t "DIJOUS" crlf)
+  else (if (eq ?day 4) then (printout t "DIVENDRES" crlf)
+  else (if (eq ?day 5) then (printout t "DISSABTE" crlf)
+  else (if (eq ?day 6) then (printout t "DIUMENGE" crlf))))))))
+
   (printout t "Recomanem que facis " ?var " ")
   (bind ?estrelles (send ?var get-intensitat))
   (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
