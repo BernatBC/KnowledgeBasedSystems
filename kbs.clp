@@ -285,7 +285,7 @@
 
 ; El sistema proposa un programa de 7 setmanes d'exercicis (on els dies d'exercici són els mateixos).
 ; Durant les primerers 4 setmanes es va incrementant l'intensitat dels exercicis (augmentant el temps o les repeticions) cada setmana.
-(loop-for-count (?week 0 3) do
+(loop-for-count (?week 0 0) do
   (printout t "SETMANA " (+ 1 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
     ;(printout t ?week ?day_of_week ?numdays (length$ ?x) crlf)
@@ -310,13 +310,15 @@
   else (if (and (eq ?day_of_week 5) (> ?numdays 5)) then (printout t "DISSABTE" crlf)
   else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
 
+  (printout t crlf)
+
       ;Imprimir estiraments de la sessió.
       (bind ?musculs (send ?var1 get-necessita_estirar))
     (loop-for-count (?j 1 (length$ ?musculs)) do
       (bind ?var (nth$ ?j ?musculs))
       (printout t "Esitrar " ?var " durant 30 segons" crlf)
         )
-
+  (printout t crlf)
   ; S'imprimeixen ara els exercicis recomanats.
   (printout t "Recomanem que comencis amb " ?var1 " ")
   (bind ?estrelles (send ?var1 get-intensitat))
@@ -385,10 +387,10 @@
   (printout t crlf)
   )
 )
-; Les últimes tres setmanes es relaxa l'intensitat per no finalitzar el programa en sec.
+; Aquest bucle no s'executa. Era quan es generaven 7 setmanes.
 ; El procediment es idèntic al de les 4 primeres setmanes però ara el nombre de repeticions / minuts està multiplicat, a més, per 0.95 * num_setmana, fent que cada setmana sigui menys intensa.
-(loop-for-count (?week 0 2) do
-  (printout t "SETMANA " (+ 5 ?week) crlf crlf)
+(loop-for-count (?week 0 -1) do
+  ;(printout t "SETMANA " (+ 5 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
     (bind ?var1 (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
     (bind ?var2 (nth$ (+ 1 (mod (+ 1 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
