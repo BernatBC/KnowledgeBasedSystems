@@ -283,25 +283,24 @@
   (exit)
 )
 
-; El sistema proposa un programa de 7 setmanes d'exercicis (on els dies d'exercici són els mateixos).
-; Durant les primerers 4 setmanes es va incrementant l'intensitat dels exercicis (augmentant el temps o les repeticions) cada setmana.
+; El sistema proposa un programa de sessions dintre d'una setmana.
 (loop-for-count (?week 0 0) do
   (printout t "SETMANA " (+ 1 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
     ;(printout t ?week ?day_of_week ?numdays (length$ ?x) crlf)
 
+  ; Obtenim el nombre de sessions de la programació d'exercicis.
     (bind ?var1 (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
     (bind ?var2 (nth$ (+ 1 (mod (+ 1 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
     (bind ?var3 (nth$ (+ 1 (mod (+ 2 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
 
-  ; Com que no és bó agrupar tots els dies d'exercicis i després deixar un buit fins al final de la setmana hem organitzat els dies de la següent manera.
+  ; Com que no és bó agrupar totes les sessions després deixar un buit fins al final de la setmana hem organitzat els dies de la següent manera.
   ; Dies setmanals: 3 -> Dies d'exercici: Dilluns, Dimecres i Divendres
   ; Dies setmanals: 4 -> Dies d'exercici: Dilluns, Dimecres, Divendres i Diumenge
   ; Dies setmanals: 5 -> Dies d'exercici: Dilluns, Dimarts, Dijous, Divendres i Diumenge. (Descans: Dimecres i Dissabte)
   ; Dies setmanals: 6 -> Dies d'exercici: Tots els dies excepte el Diumenge.
   ; Dies setmanals: 7 -> Dies d'exercici: Tots els dies.
 
-  ; A cada dia se li asignarà un exercici de la llista de recomanats final. Quan s'arriba al final de la llista s'asigna un altre cop el primer.
   (if (eq ?day_of_week 0) then (printout t "DILLUNS" crlf)
   else (if (and (eq ?day_of_week 1) (> ?numdays 4)) then (printout t "DIMARTS" crlf)
   else (if (or (and (eq ?day_of_week 1) (< ?numdays 5)) (and (eq ?day_of_week 2) (> ?numdays 5))) then (printout t "DIMECRES" crlf)
@@ -369,7 +368,8 @@
 
   ; Ara es calcula el número de repeticions o de minuts de l'exercici, depenent de l'exercici.
   ; Aquest valor es calcula segons el valor base de l'exercici, el grau de sedentarisme i la dificultat (estrelles) del propi exercici.
-  ; A més, aquest valor es multiplica per un factor que depèn de la setmana fent així un increment de l'intensitat segons la setmana.
+  ; A més, aquest valor varia segons la posició de l'exercici dintre de la sessió en el cas de ser duració (en les repeticions es manté igual): 
+  ;Si es el primer es divideix per 2, per començar moderadament, si és el segon no es divideix, exercici més intens, i l'últim es divideix per 3 per tal de anar relaxant el cos dels exercicis.
   (if (> ?repeticions3 0) then
     ; Si es tracta d'un exercici amb repeticions.
    (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions3 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles3))))) " repeticions")
@@ -388,7 +388,6 @@
   )
 )
 ; Aquest bucle no s'executa. Era quan es generaven 7 setmanes.
-; El procediment es idèntic al de les 4 primeres setmanes però ara el nombre de repeticions / minuts està multiplicat, a més, per 0.95 * num_setmana, fent que cada setmana sigui menys intensa.
 (loop-for-count (?week 0 -1) do
   ;(printout t "SETMANA " (+ 5 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
