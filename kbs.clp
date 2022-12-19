@@ -205,7 +205,7 @@
     (bind ?ht (read))
     (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Tronc]))
   )
-  
+
   (printout t "Moltes gràcies." crlf crlf)
 )
 
