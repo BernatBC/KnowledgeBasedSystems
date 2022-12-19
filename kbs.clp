@@ -205,7 +205,7 @@
     (bind ?ht (read))
     (if (eq ?ht Y) then (slot-insert$ [me] te_immobil 1 [Tronc]))
   )
-
+  
   (printout t "Moltes gràcies." crlf crlf)
 )
 
@@ -288,7 +288,12 @@
 (loop-for-count (?week 0 3) do
   (printout t "SETMANA " (+ 1 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
-    (bind ?var (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
+    ;(printout t ?week ?day_of_week ?numdays (length$ ?x) crlf)
+
+    (bind ?var1 (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
+    (bind ?var2 (nth$ (+ 1 (mod (+ 1 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
+    (bind ?var3 (nth$ (+ 1 (mod (+ 2 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
+
 
   ; Com que no és bó agrupar tots els dies d'exercicis i després deixar un buit fins al final de la setmana hem organitzat els dies de la següent manera.
   ; Dies setmanals: 3 -> Dies d'exercici: Dilluns, Dimecres i Divendres
@@ -307,22 +312,62 @@
   else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
 
   ; S'imprimeixen ara els exercicis recomanats.
-  (printout t "Recomanem que facis " ?var " ")
-  (bind ?estrelles (send ?var get-intensitat))
+  (printout t "Recomanem que comencis amb " ?var1 " ")
+  (bind ?estrelles (send ?var1 get-intensitat))
   (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
   ;calcular temps/repeticions
-  (bind ?repeticions (send ?var get-repeticions))
-  (bind ?duracio (send ?var get-duracio))
+  (bind ?repeticions (send ?var1 get-repeticions))
+  (bind ?duracio (send ?var1 get-duracio))
   (printout t crlf) 
-  ; Ara es calcula el número de repeticions o de minuts de l'exercici, depenent de l'exercici.
-  ; Aquest valor es calcula segons el valor base de l'exercici, el grau de sedentarisme i la dificultat (estrelles) del propi exercici.
-  ; A més, aquest valor es multiplica per un factor que depèn de la setmana fent així un increment de l'intensitat segons la setmana.
+
   (if (> ?repeticions 0) then
     ; Si es tracta d'un exercici amb repeticions.
    (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " repeticions")
   else 
   ; Si es tracta d'un exercici amb minuts.
-  (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " minuts de duracio")
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))) 2)) " minuts de duracio")
+  )
+  (printout t crlf crlf)
+
+
+  (printout t "Recomanem que seguidament facis " ?var2 " ")
+  (bind ?estrelles2 (send ?var2 get-intensitat))
+  (loop-for-count (?i 1 ?estrelles2) do (printout t "★"))
+  ;calcular temps/repeticions
+  (bind ?repeticions2 (send ?var2 get-repeticions))
+  (bind ?duracio2 (send ?var2 get-duracio))
+  (printout t crlf) 
+
+  (if (> ?repeticions2 0) then
+    ; Si es tracta d'un exercici amb repeticions.
+   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2))))) " repeticions")
+  else 
+  ; Si es tracta d'un exercici amb minuts.
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2)))) 1)) " minuts de duracio")
+  )
+  (printout t crlf crlf)
+
+
+  ;(printout t "DEBUG " ?var3 crlf)
+
+  (printout t "I, finalment, recomanem " ?var3 " ")
+  (bind ?estrelles3 (send ?var3 get-intensitat))
+  (loop-for-count (?i 1 ?estrelles3) do (printout t "★"))
+  ;calcular temps/repeticions
+  (bind ?repeticions3 (send ?var3 get-repeticions))
+  (bind ?duracio3 (send ?var3 get-duracio))
+  (printout t crlf) 
+
+
+  ; Ara es calcula el número de repeticions o de minuts de l'exercici, depenent de l'exercici.
+  ; Aquest valor es calcula segons el valor base de l'exercici, el grau de sedentarisme i la dificultat (estrelles) del propi exercici.
+  ; A més, aquest valor es multiplica per un factor que depèn de la setmana fent així un increment de l'intensitat segons la setmana.
+  (if (> ?repeticions3 0) then
+    ; Si es tracta d'un exercici amb repeticions.
+   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions3 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles3))))) " repeticions")
+  else 
+  ; Si es tracta d'un exercici amb minuts.
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio3 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles3)))) 3)) " minuts de duracio")
   )
   (printout t crlf crlf)
 
@@ -333,7 +378,9 @@
 (loop-for-count (?week 0 2) do
   (printout t "SETMANA " (+ 5 ?week) crlf crlf)
   (loop-for-count (?day_of_week 0 (- ?numdays 1)) do
-    (bind ?var (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
+    (bind ?var1 (nth$ (+ 1 (mod (+ (* ?numdays ?week) ?day_of_week) (length$ ?x))) ?x))
+    (bind ?var2 (nth$ (+ 1 (mod (+ 1 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
+    (bind ?var3 (nth$ (+ 1 (mod (+ 2 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
 
   (if (eq ?day_of_week 0) then (printout t "DILLUNS" crlf)
   else (if (and (eq ?day_of_week 1) (> ?numdays 4)) then (printout t "DIMARTS" crlf)
@@ -344,21 +391,61 @@
   else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
 
 
-  (printout t "Recomanem que facis " ?var " ")
-  (bind ?estrelles (send ?var get-intensitat))
+  (printout t "Recomanem que comencis amb " ?var1 " ")
+  (bind ?estrelles (send ?var1 get-intensitat))
   (loop-for-count (?i 1 ?estrelles) do (printout t "★"))
   ;calcular temps/repeticions
-  (bind ?repeticions (send ?var get-repeticions))
-  (bind ?duracio (send ?var get-duracio))
+  (bind ?repeticions (send ?var1 get-repeticions))
+  (bind ?duracio (send ?var1 get-duracio))
   (printout t crlf) 
+
   (if (> ?repeticions 0) then
-  ; Si es tracta d'un exercici amb repeticions.
-   (printout t "Amb " (integer (* (** 0.95 ?week) (* (** 1.07 3) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))))) " repeticions")
+    ; Si es tracta d'un exercici amb repeticions.
+   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))) " repeticions")
   else 
   ; Si es tracta d'un exercici amb minuts.
-  (printout t "Amb " (integer (* (** 0.95 ?week) (* (** 1.07 3) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles)))))) " minuts de duracio")
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles))))2 )) " minuts de duracio")
   )
   (printout t crlf crlf)
+
+
+  (printout t "Recomanem que seguidament facis " ?var2 " ")
+  (bind ?estrelles2 (send ?var2 get-intensitat))
+  (loop-for-count (?i 1 ?estrelles2) do (printout t "★"))
+  ;calcular temps/repeticions
+  (bind ?repeticions2 (send ?var2 get-repeticions))
+  (bind ?duracio2 (send ?var2 get-duracio))
+  (printout t crlf) 
+
+  (if (> ?repeticions2 0) then
+    ; Si es tracta d'un exercici amb repeticions.
+   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2))))) " repeticions")
+  else 
+  ; Si es tracta d'un exercici amb minuts.
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2)))) 1)) " minuts de duracio")
+  )
+  (printout t crlf crlf)
+
+
+  ;(printout t "DEBUG " ?var3 crlf)
+
+  (printout t "I, finalment, recomanem " ?var3 " ")
+  (bind ?estrelles3 (send ?var3 get-intensitat))
+  (loop-for-count (?i 1 ?estrelles3) do (printout t "★"))
+  ;calcular temps/repeticions
+  (bind ?repeticions3 (send ?var3 get-repeticions))
+  (bind ?duracio3 (send ?var3 get-duracio))
+  (printout t crlf) 
+
+  (if (> ?repeticions3 0) then
+    ; Si es tracta d'un exercici amb repeticions.
+   (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions3 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles3))))) " repeticions")
+  else 
+  ; Si es tracta d'un exercici amb minuts.
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio3 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles3)))) 3)) " minuts de duracio")
+  )
+  (printout t crlf crlf)
+
 
   )
 )

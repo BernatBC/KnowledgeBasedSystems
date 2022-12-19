@@ -2,7 +2,7 @@
 ;;; ontologiaKBS.clp
 ;;; Translated by owl2clips
 ;;; Translated to CLIPS from ontology ontologiaKBS.owl
-;;; :Date 13/12/2022 11:13:30
+;;; :Date 19/12/2022 10:53:14
 
 (defclass Malaltia "Taxonomia de malaltia."
     (is-a USER)
@@ -41,13 +41,16 @@
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
-    (slot duracio
+    (multislot necessita_estirar
+        (type INSTANCE)
+        (create-accessor read-write))
+    (multislot duracio
         (type SYMBOL)
         (create-accessor read-write))
     (slot intensitat
         (type SYMBOL)
         (create-accessor read-write))
-    (slot repeticions
+    (multislot repeticions
         (type SYMBOL)
         (create-accessor read-write))
 )
@@ -131,20 +134,28 @@
 )
 
 (definstances instances
+    ([Abductors] of Part-del-cos
+    )
+
     ([Andar-rápido] of Fortalecimiento
+         (necessita_estirar  [Abductors] [Isquiotibials] [Quadriceps])
          (duracio  20)
          (intensitat  2)
          (repeticions  0)
     )
 
     ([Artritis] of Locomotiva
-         (recomenable_amb  [Andar-rápido] [Baile] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Yoga])
+         (recomenable_amb  [Andar-rápido] [Baile] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas])
     )
 
     ([Baile] of Flexibilización
+         (necessita_estirar  [Cervicals] [Lumbars])
          (duracio  20)
          (intensitat  2)
          (repeticions  0)
+    )
+
+    ([Biceps] of Part-del-cos
     )
 
     ([Braç] of Part-del-cos
@@ -156,13 +167,14 @@
     )
 
     ([Caminar] of Flexibilización
+         (necessita_estirar  [Abductors] [Isquiotibials] [Quadriceps])
          (duracio  20)
          (intensitat  1)
          (repeticions  0)
     )
 
     ([Cancer] of Otros
-         (recomenable_amb  [Caminar] [Correr] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas] [Yoga])
+         (recomenable_amb  [Caminar] [Correr] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas])
     )
 
     ([Cervicals] of Part-del-cos
@@ -170,21 +182,22 @@
     )
 
     ([Correr] of Resistencia
+         (necessita_estirar  [Abductors] [Isquiotibials] [Quadriceps])
          (duracio  20)
          (intensitat  4)
          (repeticions  0)
     )
 
     ([Diabetes] of Otros
-         (recomenable_amb  [Andar-rápido] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas] [Yoga])
+         (recomenable_amb  [Andar-rápido] [Caminar] [Gimnasia] [Ir-en-bici] [Natación] [Pesas] [Sentadillas])
     )
 
     ([Enfermedad-cardiovascular-ateroesclerotica] of Cardiovascular
-         (recomenable_amb  [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas] [Yoga])
+         (recomenable_amb  [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas])
     )
 
     ([Enfermedad-pulmonar-obstructiva-cronica] of Respiratoria
-         (recomenable_amb  [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas] [Yoga])
+         (recomenable_amb  [Caminar] [Gimnasia] [Ir-en-bici] [Pesas] [Sentadillas])
     )
 
     ([Esquena] of Part-del-cos
@@ -196,6 +209,7 @@
     )
 
     ([Gimnasia] of Resistencia
+         (necessita_estirar  [Cervicals] [Lumbars])
          (duracio  30)
          (intensitat  3)
          (repeticions  0)
@@ -206,12 +220,20 @@
     )
 
     ([Ir-en-bici] of Resistencia
+         (necessita_estirar  [Abductors] [Isquiotibials] [Quadriceps])
          (duracio  20)
          (intensitat  4)
          (repeticions  0)
     )
 
+    ([Isquiotibials] of Part-del-cos
+    )
+
+    ([Lumbars] of Part-del-cos
+    )
+
     ([Natación] of Resistencia
+         (necessita_estirar  [Biceps] [Cervicals] [Pectoral] [Quadriceps])
          (duracio  20)
          (intensitat  3)
          (repeticions  0)
@@ -225,17 +247,26 @@
          (recomenable_amb  [Caminar] [Gimnasia] [Subir-escaleras])
     )
 
+    ([Pectoral] of Part-del-cos
+    )
+
     ([Pesas] of Fortalecimiento
+         (necessita_estirar  [Biceps] [Triceps])
          (intensitat  2)
          (repeticions  20)
     )
 
+    ([Quadriceps] of Part-del-cos
+    )
+
     ([Sentadillas] of Fortalecimiento
+         (necessita_estirar  [Abductors] [Isquiotibials] [Lumbars] [Quadriceps])
          (intensitat  3)
          (repeticions  20)
     )
 
     ([Subir-escaleras] of Fortalecimiento
+         (necessita_estirar  [Abductors] [Isquiotibials] [Quadriceps])
          (duracio  20)
          (intensitat  1)
          (repeticions  0)
@@ -245,14 +276,11 @@
          (recomenable_amb  [Baile] [Caminar] [Correr] [Gimnasia] [Ir-en-bici])
     )
 
-    ([Tronc] of Part-del-cos
-         (incompatible_amb  [Baile] [Correr] [Gimnasia] [Natación] [Sentadillas] [Yoga])
+    ([Triceps] of Part-del-cos
     )
 
-    ([Yoga] of Flexibilización
-         (duracio  30)
-         (intensitat  1)
-         (repeticions  0)
+    ([Tronc] of Part-del-cos
+         (incompatible_amb  [Baile] [Correr] [Gimnasia] [Natación] [Sentadillas])
     )
 
     ([me] of Persona
