@@ -316,7 +316,7 @@
       (bind ?musculs (send ?var1 get-necessita_estirar))
     (loop-for-count (?j 1 (length$ ?musculs)) do
       (bind ?var (nth$ ?j ?musculs))
-      (printout t "Esitrar " ?var " durant 30 segons" crlf)
+      (printout t "Estirar " ?var " durant 30 segons" crlf)
         )
   (printout t crlf)
   ; S'imprimeixen ara els exercicis recomanats.
@@ -382,7 +382,7 @@
       (bind ?musculs (send ?var3 get-necessita_estirar))
     (loop-for-count (?j 1 (length$ ?musculs)) do
       (bind ?var (nth$ ?j ?musculs))
-      (printout t "Esitrar " ?var " durant 30 segons" crlf)
+      (printout t "Estirar " ?var " durant 30 segons" crlf)
         )
   (printout t crlf)
   )
