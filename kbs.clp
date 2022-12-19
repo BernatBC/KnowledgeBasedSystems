@@ -294,7 +294,6 @@
     (bind ?var2 (nth$ (+ 1 (mod (+ 1 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
     (bind ?var3 (nth$ (+ 1 (mod (+ 2 (+ (* ?numdays ?week) ?day_of_week)) (length$ ?x))) ?x))
 
-
   ; Com que no és bó agrupar tots els dies d'exercicis i després deixar un buit fins al final de la setmana hem organitzat els dies de la següent manera.
   ; Dies setmanals: 3 -> Dies d'exercici: Dilluns, Dimecres i Divendres
   ; Dies setmanals: 4 -> Dies d'exercici: Dilluns, Dimecres, Divendres i Diumenge
@@ -310,6 +309,13 @@
   else (if (or (or (and (eq ?day_of_week 2) (< ?numdays 5)) (and (eq ?day_of_week 3) (eq ?numdays 5))) (and (eq ?day_of_week 4) (> ?numdays 5))) then (printout t "DIVENDRES" crlf)
   else (if (and (eq ?day_of_week 5) (> ?numdays 5)) then (printout t "DISSABTE" crlf)
   else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
+
+      ;Imprimir estiraments de la sessió.
+      (bind ?musculs (send ?var1 get-necessita_estirar))
+    (loop-for-count (?j 1 (length$ ?musculs)) do
+      (bind ?var (nth$ ?j ?musculs))
+      (printout t "Esitrar " ?var " durant 30 segons" crlf)
+        )
 
   ; S'imprimeixen ara els exercicis recomanats.
   (printout t "Recomanem que comencis amb " ?var1 " ")
@@ -371,6 +377,12 @@
   )
   (printout t crlf crlf)
 
+      (bind ?musculs (send ?var3 get-necessita_estirar))
+    (loop-for-count (?j 1 (length$ ?musculs)) do
+      (bind ?var (nth$ ?j ?musculs))
+      (printout t "Esitrar " ?var " durant 30 segons" crlf)
+        )
+  (printout t crlf)
   )
 )
 ; Les últimes tres setmanes es relaxa l'intensitat per no finalitzar el programa en sec.
@@ -390,6 +402,13 @@
   else (if (and (eq ?day_of_week 5) (> ?numdays 5)) then (printout t "DISSABTE" crlf)
   else (if (or (or (and (eq ?day_of_week 3) (eq ?numdays 4)) (and (eq ?day_of_week 4) (eq ?numdays 5))) (and (eq ?numdays 7) (eq ?day_of_week 6))) then (printout t "DIUMENGE" crlf))))))))
 
+      (bind ?musculs (send ?var1 get-necessita_estirar))
+    (loop-for-count (?j 1 (length$ ?musculs)) do
+      (bind ?var (nth$ ?j ?musculs))
+      (printout t "Esitrar " ?var " durant 30 segons" crlf)
+        )
+
+  (printout t crlf)
 
   (printout t "Recomanem que comencis amb " ?var1 " ")
   (bind ?estrelles (send ?var1 get-intensitat))
@@ -422,7 +441,7 @@
    (printout t "Amb " (integer (* (** 1.07 ?week) (+ ?repeticions2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2))))) " repeticions")
   else 
   ; Si es tracta d'un exercici amb minuts.
-  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2)))) 1)) " minuts de duracio")
+  (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio2 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles2)))) 1.5)) " minuts de duracio")
   )
   (printout t crlf crlf)
 
@@ -444,8 +463,16 @@
   ; Si es tracta d'un exercici amb minuts.
   (printout t "Amb " (integer (/ (* (** 1.07 ?week) (+ ?duracio3 (* 10 (/ (send [me] get-grau_sedentarisme) ?estrelles3)))) 3)) " minuts de duracio")
   )
+
   (printout t crlf crlf)
 
+      (bind ?musculs (send ?var3 get-necessita_estirar))
+    (loop-for-count (?j 1 (length$ ?musculs)) do
+      (bind ?var (nth$ ?j ?musculs))
+      (printout t "Esitrar " ?var " durant 30 segons" crlf)
+        )
+
+    (printout t crlf)
 
   )
 )
